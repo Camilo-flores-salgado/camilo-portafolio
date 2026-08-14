@@ -1,0 +1,307 @@
+# CLAUDE.md — Portafolio
+
+Instrucciones permanentes para este repositorio. Léelas completas antes de escribir código.
+
+Este archivo es la **fuente de verdad y la autoridad máxima** del proyecto. Si cualquier skill, MCP o herramienta (Superpowers, TasteSkill, codebase-memory-mcp, frontend-design, etc.) dice algo que contradiga este archivo, **manda este archivo**. Ninguna herramienta reescribe este documento sin que yo lo apruebe explícitamente.
+
+Es un proyecto **separado** de camiloflores.cl y del demo Encuentro PyME. Repo propio, deploy propio, stack propio, estética propia. No comparte código con ellos y no se los edita desde acá.
+
+---
+
+## 0. Estado actual
+
+**Última actualización:** setup de herramientas cerrado, antes del primer código.
+
+Portafolio personal de Camilo Flores, orientado a **reclutadores** para empleo full-time. Es el tercer sitio del ecosistema, con un objetivo distinto a los otros dos (empleo, no clientes locales) y una estética distinta a propósito (técnica-editorial).
+
+**El entorno de herramientas ya está verificado y cerrado** (§4). Nada de código construido todavía.
+
+---
+
+## 1. Qué es esto
+
+Portafolio de Camilo Flores, desarrollador web.
+
+**Objetivo:** que una persona que contrata —reclutador técnico, hiring manager, o cliente de proyecto internacional— entre, en 10-15 segundos entienda qué tipo de desarrollador es Camilo y con qué trabaja, vea evidencia real de su trabajo, y tenga cómo contactarlo o seguir mirando (GitHub, LinkedIn, correo, CV).
+
+**Audiencia:** reclutadores y hiring managers, en inglés, mercado internacional/remoto. Muchos escanean rápido y muchos abren el GitHub. Segundo público: otros desarrolladores que juzgan el código.
+
+**Este sitio es lo contrario a camiloflores.cl:**
+- Ahí se esconde la tecnología; **acá se muestra.** El stack visible y escaneable es un requisito.
+- Ahí el idioma es español; **acá es inglés.**
+- Ahí no importa el SEO; **acá sí** — un reclutador te googlea, y la consistencia de entidad importa (§10).
+- Ahí el contacto es WhatsApp; **acá es correo**, más GitHub y LinkedIn.
+
+**Discreción laboral (importante).** Camilo tiene trabajo full-time. El sitio **presenta su trabajo con seguridad, sin anunciar que busca pega.** Nada de "available for hire", "looking for opportunities" ni banners de disponibilidad. Un portafolio seguro no ruega. Y la empresa donde trabaja hoy **no se nombra** (ver §13), para no exponer una búsqueda frente al empleador actual.
+
+---
+
+## 2. Regla de oro
+
+> Este sitio **es** la demostración. Cada decisión de código, rendimiento y diseño es parte del portafolio. Si algo haría que un ingeniero senior arrugue la nariz al abrir devtools, no va.
+
+Corolario: acá la excelencia técnica **no** es invisible (como en el sitio de ventas). Se muestra —en las métricas, en el stack, en el "por qué" de cada proyecto— pero se muestra con oficio, no con humo.
+
+### Honestidad — sigue siendo el pilar
+
+- Ninguna cifra sin medir. Métricas del propio sitio y de cada proyecto: medidas con Lighthouse/PageSpeed, no estimadas.
+- Nada de proyectos inflados, stacks que no domina, ni "experiencia" que no tuvo.
+- Un proyecto cuyo sitio ya no existe (GVE) **no se presenta con un enlace en vivo roto**: se cuenta como experiencia con su testimonio (§13).
+- Nunca se atribuye identidad falsa a personas reales (fotos de stock como "clientes/relatores").
+
+---
+
+## 3. Stack — fijo, no negociable
+
+| Capa | Decisión |
+|---|---|
+| Framework | **Next.js (App Router)**, export estático (`output: 'export'`) |
+| Librería UI | **React** + TypeScript `strict` |
+| Estilos | TailwindCSS |
+| Animación | CSS scroll-driven + scroll-snap nativo primero; Framer Motion solo si hace falta y con presupuesto (§7) |
+| Tipografías | `next/font` (self-host automático, sin CLS), subset latino |
+| Imágenes | Pre-optimizadas a AVIF a mano; `next/image` con `unoptimized` (el export estático no corre el optimizador) o `<img>` con tamaño declarado |
+| Hosting | Cloudflare, deploy automático desde la rama de producción |
+| Dominio | `TODO:` (para público internacional, un `.dev` se lee bien; a decidir) |
+| Contacto | correo + GitHub + LinkedIn + CV en PDF. Sin formularios |
+
+**Por qué Next/React acá y Astro allá:** no es contradicción, es la herramienta correcta para *esta* audiencia. El mercado laboral corre sobre React y Next y muchos reclutadores filtran por esas palabras. Mostrarlos **es** parte del trabajo del sitio. Pero Next no es excusa para un sitio pesado: la disciplina de rendimiento se traslada, no se relaja (§5).
+
+**Export estático:** el sitio no tiene nada dinámico en runtime. Todo pre-generado. Sin componentes de servidor con fetch en vivo, sin rutas dinámicas sin `generateStaticParams`.
+
+### Prohibiciones de dependencias
+No instales nada sin preguntar. Explica qué resuelve, cuánto pesa (en KB al bundle de cliente), y la alternativa nativa. Framer Motion pesa: si se propone, se justifica contra CSS scroll-driven, y se carga solo donde se use.
+
+---
+
+## 4. Herramientas y skills — jerarquía y gobernanza
+
+**Estado verificado por filesystem** (no por inferencia). Esta sección refleja el setup real, cerrado antes de escribir código.
+
+### Reglas, sin excepción
+
+- **Este archivo manda.** Ante conflicto entre una skill y este documento, gana este documento. Si una skill quiere hacer algo que acá está prohibido, dímelo en vez de obedecerla.
+- **Ninguna herramienta edita este archivo, ni el repo fuera de lo pedido, sin mi OK.** Vale para Superpowers, codebase-memory-mcp y cualquier instalador que quiera "agregar una sección a CLAUDE.md" o redirigir tools. Si una herramienta lo pide, pregúntame primero.
+- Sigue rigiendo **§11**: un cambio a la vez, avísame antes de cambios estructurales.
+
+### Instaladas LOCAL al proyecto (`.claude/skills/`, con `skills-lock.json`)
+
+Estas tres son las únicas que este proyecto declara como propias. Nada más debería estar en el `.claude/` de este repo.
+
+- **frontend-design (Anthropic)** — guía de diseño distintivo. Se usa normal.
+- **webapp-testing (Anthropic)** — fuente: `anthropics/skills`. Scripts nativos de Playwright en Python para testear la app local; NO es el MCP `playwright`, es una skill con criterio de testing incorporado (árbol de decisión HTML estático vs. dinámico, disciplina de no inflar contexto). Úsala para verificar de verdad: animaciones de scroll, navegación por teclado, foco, contraste, y el pre-flight de calidad antes de dar algo por terminado.
+- **TasteSkill (`design-taste-frontend`)** — fuente: `Leonxlnx/taste-skill`. Reglas anti-genérico. **Alineada casi por completo** con la estética de §6 (un solo acento, sin gradientes de IA, sin scroll listeners a mano, sin tres tarjetas iguales). Se usa, **con estas sobrescrituras explícitas**, porque manda este archivo:
+  - **Numeración de proyectos `01 / 02 / 03` SÍ se permite.** TasteSkill banea eyebrows numerados en general; acá es una secuencia real de proyectos y es parte del concepto de ficha técnica (§6). Excepción autorizada.
+  - **Los guiones largos (em-dash) los decido yo.** La voz del sitio la define §8, no TasteSkill. Su prohibición de em-dash no aplica acá.
+  - Su "hero discipline" (título ≤2 líneas, subtexto ≤20 palabras) se toma como **guía, no ley**; nuestro hero ya es corto, así que no debería chocar.
+
+*Nota de duplicado pendiente:* `frontend-design` quedó instalada dos veces a nivel global desde dos marketplaces distintos (`claude-code-plugins` y `claude-plugins-official`). No afecta el funcionamiento; limpiar cuando haya un momento (`claude plugin remove frontend-design@claude-plugins-official`, dejando la otra copia).
+
+### Instaladas GLOBAL (`~/.claude/`, decisión consciente: opción B)
+
+Se evaluó migrar a scope local vs. dejar global (opción A vs. B) y **se optó por B**: más simple y rápido para empezar, a cambio de gobernanza explícita en cada `CLAUDE.md` del ecosistema (los tres proyectos, no solo este, llevan ahora la cláusula de gobernanza).
+
+- **Superpowers** — capa de workflow (planificar, revisar). Disponible en los tres proyectos. Úsala para pensar y revisar, pero la **sustancia** (stack, presupuesto, estética, voz) la fija este archivo. No debe reescribir este `CLAUDE.md` ni cambiar el stack. Si su workflow choca con "un cambio a la vez / avísame antes", gana este archivo.
+- **codebase-memory-mcp** — indexa el repo en un grafo. Realidad: los tres proyectos son chicos, así que su valor es marginal en todos; puede quedar prácticamente ocioso y está bien. No debe editar este archivo ni la config de otros agentes.
+
+### Desactivada — evaluada y descartada
+
+- **claude-mem** — evaluada en detalle (repo `thedotmack/claude-mem`) y **desactivada** (`claude plugin disable claude-mem`). Motivos: (1) instala Bun y `uv` por su cuenta y causó un error de hook al arrancar sesiones; (2) corre un worker service en segundo plano con fallos silenciosos por diseño (el hook de setup sale con código 0 aunque falle); (3) tiene un token cripto asociado al proyecto, señal que resta confianza para una herramienta con acceso al código; (4) su función (memoria de conversación entre sesiones) ya la cumple este mismo archivo, bien mantenido, de forma más simple y auditable; (5) está pensada para uso intensivo en repos grandes y de largo aliento, no para un portafolio de 4 secciones. Si algún día se reconsidera, que sea para un proyecto grande y sin el token de por medio.
+
+### Herramientas nativas del CLI (no son skills/plugins instalados)
+
+`run`, `review`, `security-review`, `simplify`, `init` y similares son funciones propias de Claude Code, no algo que alguien instaló. No requieren gobernanza especial; se usan cuando aplican, sin más.
+
+### No usar en este proyecto
+
+`context-mode`, `claude-in-chrome`, `dataviz`, `artifact-design`, `loop`, `schedule`, `claude-api`, y cualquier otra skill/plugin que aparezca disponible pero no esté en las listas de arriba. Que estén disponibles en el entorno no significa que apliquen acá — no se usan ni se mencionan salvo que se agreguen a propósito a este archivo.
+
+Principio general: **menos skills bien gobernadas > muchas peleando.** Cada una suma contexto; este archivo es el que impone orden.
+
+---
+
+## 5. Presupuesto de rendimiento — React-aware pero estricto
+
+Este sitio no va a ser 0 KB de JS como los de Astro, **a propósito** — su trabajo es demostrar dominio de React/Next a un reclutador. Pero sigue siendo la prueba de que Camilo hace sitios rápidos, así que los límites son duros y **se miden, no se estiman**.
+
+- **JS de primera carga: < 120 KB** comprimido (React + Next ya trae una base; mantén lo demás al mínimo). Si se usa Framer Motion, entra en este presupuesto y se carga solo donde se necesita, no global.
+- **Peso total de la página: < 400 KB** comprimido, con fuentes e imágenes.
+- **LCP: < 2,0 s** en móvil / 4G simulado.
+- **CLS: < 0,01.** Toda imagen con tamaño declarado; `next/font` para las tipografías (evita el salto); nada que reflowee al hidratar.
+- **INP: < 200 ms.** Las animaciones no bloquean el hilo principal.
+- **Lighthouse móvil:** Rendimiento ≥ 95 (meta 100); Accesibilidad, Prácticas y SEO en 100.
+- Sin banner de cookies (analítica sin cookies o ninguna). Sin fuentes de terceros por CDN. Sin embeds pesados.
+
+Regla: tras cualquier cambio que toque animaciones, imágenes, fuentes o dependencias, **medir con PageSpeed contra el deploy.** El propio sitio es el primer proyecto del portafolio; sus métricas se muestran, así que tienen que ser reales y buenas.
+
+---
+
+## 6. Dirección visual — "técnica-editorial"
+
+**Concepto:** documento de ingeniería de precisión. Grilla, tipografía fuerte, monoespaciada usada con bisturí (etiquetas y metadatos, no en todo), datos y métricas presentados como ficha técnica. Distinta a propósito de los otros dos sitios (letrero pintado / evento cálido). Le habla a un ojo de ingeniero.
+
+La identidad la da el **tratamiento** (grilla, mono, tabular, reglas finas, numeración de secciones), no el color. Por eso comparte poco con los otros dos aunque haya un azul de por medio.
+
+**Prohibido** (esto es el portafolio de dev genérico, que hay que evitar porque el sitio *es* la prueba de gusto):
+- Fondo oscuro + monoespaciada en todo + verde terminal (el "hacker portfolio" trillado).
+- Gradientes violeta/mesh de IA, glassmorphism, neumorphism.
+- Tres tarjetas iguales de proyectos.
+- Scroll-jacking, marquesinas, cursores custom decorativos, blobs.
+- Inter/Poppins/Montserrat.
+- `window.addEventListener('scroll')` a mano para animaciones (usa scroll-driven nativo o IntersectionObserver).
+
+### Tokens
+
+```css
+--paper:   #F6F6F4;  /* fondo — casi blanco frío */
+--ink:     #16181D;  /* texto — casi negro azulado */
+--grey:    #70747C;  /* texto secundario, metadatos */
+--line:    #E3E3E0;  /* hairlines */
+--accent:  #2B4AF2;  /* acento único — cobalto eléctrico (digital, no esmalte pintado) */
+```
+
+Un solo acento (`--accent`), usado con moderación: enlaces, una cifra destacada, el marcador activo. El resto es tinta sobre papel. Sin sombras dramáticas. Bordes hairline. Radios pequeños o rectos.
+
+### Tipografía (vía `next/font`, subset latino)
+
+- **Display / titulares:** Space Grotesk (700) — grotesca con carácter técnico.
+- **Cuerpo:** IBM Plex Sans (400 / 500).
+- **Etiquetas y metadatos:** IBM Plex Mono (500) — mono solo para labels, cifras de ficha, años, "01/02".
+- Cifras tabulares (`tabular-nums`) en métricas y numeración.
+- Escala tipográfica explícita en el theme de Tailwind. Nada de tamaños arbitrarios.
+
+### Piso de calidad
+Responsive hasta 360px. Foco de teclado visible. `prefers-reduced-motion` respetado (§7). Contraste AA mínimo, AAA en cuerpo; verifica los ratios reales (el cobalto sobre papel y el gris sobre papel se calculan, no se estiman). Enlaces que abren pestaña nueva lo avisan con `sr-only`. Todo indexable y semántico (§10).
+
+---
+
+## 7. Animaciones — el efecto de "pantallas verticales"
+
+El efecto pedido: cada proyecto se siente como una pantalla vertical que se revela al hacer scroll, en secuencia. Bien hecho es un flex; mal hecho ahuyenta al reclutador.
+
+**Hazlo así:**
+- **Scroll-driven nativo primero:** CSS `animation-timeline: view()` / `scroll()` e `IntersectionObserver` para el revelado. Cero JS de scroll a mano. Es más rápido, accesible, y demuestra que conoces la plataforma moderna — que es exactamente el punto ante un reclutador técnico.
+- **Scroll-snap con criterio:** si se usa snap entre pantallas de proyecto, `scroll-snap-type` en modo **proximity**, no `mandatory`. El snap obligatorio de viewport completo secuestra el scroll y enfurece a quien escanea rápido. La barra de scroll, la rueda y el teclado deben funcionar siempre; nadie queda atrapado.
+- **NADA de scroll-jacking destructivo.** No secuestrar la rueda para forzar un recorrido.
+- **Solo `transform` y `opacity`** en las animaciones (GPU, sin reflow). No animar propiedades que disparen layout.
+- **`prefers-reduced-motion`: obligatorio.** Si el usuario lo pide, se muestra todo el contenido estático, sin revelado ni snap. El contenido nunca depende de la animación para ser legible.
+- Si Framer Motion resuelve algo que el CSS nativo no, se usa acotado y dentro del presupuesto de §5 — no como default para todo.
+
+---
+
+## 8. Voz y copy
+
+**Inglés**, en todo el sitio. Seguro, técnico pero claro, sin jerga vacía.
+
+- **Presenta, no ruega.** Declaraciones de oficio ("I build fast, accessible websites"), nunca "hire me" / "available for work" / "open to opportunities".
+- Cada proyecto se cuenta por su **decisión de ingeniería y su resultado medido**, no por adjetivos. "No UI framework; the speed is the argument" pesa más que "a beautiful, modern website".
+- Frases cortas, verbos activos.
+- Los enlaces dicen qué son: "Live", "Code", "Download CV".
+- **Guiones largos (em-dash): permitidos.** Es decisión de voz de este proyecto (sobrescribe a TasteSkill, §4).
+- Nada de cifras sin medir.
+
+---
+
+## 9. Alcance — v1
+
+**Rutas. Solo estas:**
+1. `/` — el portafolio (una sola página larga)
+2. `/404`
+
+**Secciones de la página, en orden:**
+1. **Hero** — nombre, rol, declaración de oficio, ficha técnica (focus / stack / based in), enlaces GitHub + LinkedIn.
+2. **Selected work** — las pantallas de proyecto con el revelado por scroll (§7). Cada una: número (01/02/03), año, título, una línea de *por qué*, fila de métricas medidas, y enlaces (Live / Code) donde existan.
+3. **About** — bio técnica breve, honesta, en la voz de §8. Sin "busco pega".
+4. **Contact** — correo, GitHub, LinkedIn, y descarga de CV (PDF).
+
+**Fuera de alcance en v1. No construir ni proponer:**
+blog, i18n (es solo inglés), modo oscuro (a menos que se decida a propósito como demostración; por defecto no), CMS, formulario de contacto, panel de estadísticas, más rutas. Ideas nuevas → `IDEAS.md`.
+
+Recordatorio de foco: el portafolio es una apuesta **nueva** (empleo), distinta de la apuesta local. Con 5-10 h/semana y otros dos proyectos vivos, el mayor riesgo sigue siendo el alcance y la dispersión. v1 mínima y excelente.
+
+---
+
+## 10. SEO / GEO / entidad — acá sí importa
+
+A diferencia del sitio de ventas, este **debe ser encontrable**: un reclutador te googlea.
+
+- Indexable (nada de `noindex` en la página principal).
+- Un `<h1>`, jerarquía real de encabezados, HTML semántico y parseable.
+- `<title>` y `meta description` escritos a mano, en inglés.
+- JSON-LD `Person` (nombre, rol, `sameAs` a GitHub y LinkedIn, ubicación).
+- OG image estática.
+- **Consistencia de entidad:** mismo nombre ("Camilo Flores"), mismo handle, misma descripción y foto (si hay) que en GitHub y LinkedIn. Esto es lo que más ayuda a que te encuentren y a que un modelo te cite — más que cualquier truco.
+- `sitemap.xml`, `robots.txt`, `llms.txt`.
+
+---
+
+## 11. Cómo trabajar conmigo
+
+- **Un cambio a la vez.** No refactorices de paso. No toques archivos que no pedí.
+- **Antes de un cambio estructural**, dime en 3 líneas qué vas a hacer y espera mi OK. Rige por sobre cualquier workflow de skill.
+- **No instales dependencias sin preguntar** (con su peso en KB al cliente).
+- **No inventes contenido ni cifras.** Lo que falte va como `TODO:` y me avisas. Métricas y contrastes se miden/calculan.
+- **Ninguna skill reescribe este archivo ni reconfigura el entorno sin mi OK.**
+- Listas repetidas (proyectos, métricas) como array + `map`, no markup copiado.
+- Código aburrido y explícito por sobre ingenioso.
+- Si algo que pido rompe una regla de acá, dímelo en vez de obedecer.
+- Cuando cambie algo estructural, un dato de §13, o el estado de una herramienta en §4 (instalar, desactivar, cambiar de scope), **actualiza este archivo en el mismo cambio.**
+
+---
+
+## 12. Definición de terminado
+
+1. Cumple el presupuesto de §5, **medido** contra el deploy.
+2. Cero errores/warnings en consola y en el build. TypeScript sin errores.
+3. Se ve y funciona a 360px.
+4. Navegable completa con teclado; foco visible; el revelado por scroll no atrapa a nadie.
+5. `prefers-reduced-motion` verificado: todo el contenido legible sin animación.
+6. Cada afirmación y cada métrica tiene un número medido detrás, o se borró.
+7. Un reclutador lo abre y, en 15 segundos, entiende qué desarrollador es Camilo, con qué trabaja, y cómo contactarlo — y quiere abrir el GitHub.
+
+El punto 7 es el que importa. Los otros seis son piso.
+
+---
+
+## 13. Datos de contenido aprobados — usar tal cual, no inventar
+
+Todo en **inglés**. Lo que falte es `TODO:` y se pregunta.
+
+### Hero
+- Nombre: **Camilo Flores** · Rol: **Web Developer**
+- Titular (declaración de oficio): **"I build fast, accessible websites — by hand."**
+- Ficha técnica (mono):
+  - Focus: performance & accessibility
+  - Stack: Next.js · React · TypeScript
+  - Based in: San Felipe, Chile
+- Enlaces: GitHub `TODO:`, LinkedIn `TODO:`
+
+### Selected work (3)
+1. **camiloflores.cl** — sales site for a local web-dev practice. No UI framework, no client JS beyond a live load-time meter; the speed is the argument. Links: Live + Code. Métricas: `TODO:` medidas (Performance, CLS, JS).
+2. **Encuentro PyME Aconcagua** — demo event landing with a real registration form that works with **no client JS** (Cloudflare Worker + Resend, native POST). Rotularlo como **demo/ejemplo**. Links: Live + Code. Métricas: `TODO:` medidas.
+3. **GVE Sistemas** — client website (built end-to-end). **La empresa cerró y el sitio ya no está en línea: NO poner enlace "Live" roto.** Se presenta como experiencia con el testimonio (permiso concedido): *"Trabajar con Camilo Flores fue una experiencia excelente…"* — **Gonzalo Toro, CEO, ITQ Internacional.** (Traducir al inglés con cuidado o mantener la cita en español con nota; a decidir.)
+
+### About / empleo
+- Referir la experiencia actual como "a Chilean technology company with international presence". **Sin nombrar la empresa** (discreción frente al empleo actual, §1). `TODO:` decidir si en el CV privado se nombra.
+- Nada de "looking for work".
+
+### Contact
+- Correo: `TODO:` (profesional)
+- GitHub: `TODO:` · LinkedIn: `TODO:`
+- CV: `TODO:` PDF, descargable. Enlace abre/descarga; si abre pestaña, avisar con `sr-only`.
+
+### Dominio
+- `TODO:` confirmar (posible `.dev` para público internacional).
+
+---
+
+## 14. Qué falta — antes y después de construir
+
+Antes de que el sitio sirva de verdad, cosas que **solo tú** resuelves y no son código:
+1. **Consistencia de entidad** (§10): dejar GitHub y LinkedIn con el mismo nombre, descripción y foto que el portafolio. Es lo que más rinde.
+2. **El CV en PDF** al día.
+3. **Decidir el dominio** y si nombras (o no) tu empleo actual.
+4. **Medir** las métricas reales de los tres proyectos para no publicar cifras sin medir.
+5. **Limpiar el duplicado de `frontend-design`** a nivel global (§4) — no urgente, cosmético.
+
+Y el recordatorio de fondo: este es tu tercer proyecto activo más un trabajo full-time. Es una apuesta legítima pero nueva. Constrúyela sabiendo que compite por tus 5-10 horas con lo demás; mínima y excelente antes que grande y a medias.
