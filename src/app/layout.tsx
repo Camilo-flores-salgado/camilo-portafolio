@@ -36,6 +36,7 @@ const personJsonLd = {
     addressLocality: "San Felipe",
     addressCountry: "CL",
   },
+  email: "houdini.dev@outlook.com",
   sameAs: [
     "https://github.com/r3ckleszz1",
     "https://linkedin.com/in/camilo-flores",

@@ -187,6 +187,8 @@ Un solo acento (`--accent`), usado con moderación: enlaces, una cifra destacada
 ### Piso de calidad
 Responsive hasta 360px. Foco de teclado visible. `prefers-reduced-motion` respetado (§7). Contraste AA mínimo, AAA en cuerpo; verifica los ratios reales (el cobalto sobre papel y el gris sobre papel se calculan, no se estiman). Enlaces que abren pestaña nueva lo avisan con `sr-only`. Todo indexable y semántico (§10).
 
+**Excepción de contraste, documentada:** `--accent` sobre `--paper` da **5,77:1** (medido). Cumple AA (≥4,5:1) con margen, pero **no alcanza AAA (7:1) en ningún peso ni tamaño dentro del rango de `text-body-lg`** — es un límite matemático del color mismo, no de la implementación. Los usos de `--accent` como elemento de UI (tags de proyecto, outline de foco) no están sujetos a la regla de AAA de cuerpo, así que no aplica ahí. Cuando `--accent` se use como énfasis dentro de **prosa de cuerpo** (como en About, §13), el estándar exigido es **AA, no AAA**, a propósito y por excepción — mantenerlo a spans cortos (2-4 palabras), nunca párrafos completos en ese color.
+
 ---
 
 ## 7. Animaciones — el efecto de "pantallas verticales"
@@ -300,9 +302,9 @@ Todo en **inglés**. Lo que falte es `TODO:` y se pregunta.
 - Nada de "looking for work".
 
 ### Contact
-- Correo: `TODO:` (profesional)
+- Correo: `houdini.dev@outlook.com`
 - GitHub: `https://github.com/r3ckleszz1` · LinkedIn: `https://linkedin.com/in/camilo-flores`
-- CV: `TODO:` PDF, descargable. Enlace abre/descarga; si abre pestaña, avisar con `sr-only`.
+- CV: `public/cv-camilo-flores.pdf`, descargable (`download`). Enlace de descarga directa, sin `target="_blank"`.
 
 ### Dominio
 - `TODO:` confirmar (posible `.dev` para público internacional).
