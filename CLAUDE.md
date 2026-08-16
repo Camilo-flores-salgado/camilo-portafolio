@@ -92,14 +92,17 @@ Next 16 auto-detecta agentes de IA y, por defecto, edita `CLAUDE.md` al correr `
 
 ### Instaladas LOCAL al proyecto (`.claude/skills/`, con `skills-lock.json`)
 
-Estas tres son las únicas que este proyecto declara como propias. Nada más debería estar en el `.claude/` de este repo.
+Estas dos son las únicas con symlink real y entrada en `skills-lock.json` (que vive en la raíz del repo). Nada más debería estar en el `.claude/` de este repo.
 
-- **frontend-design (Anthropic)** — guía de diseño distintivo. Se usa normal.
 - **webapp-testing (Anthropic)** — fuente: `anthropics/skills`. Scripts nativos de Playwright en Python para testear la app local; NO es el MCP `playwright`, es una skill con criterio de testing incorporado (árbol de decisión HTML estático vs. dinámico, disciplina de no inflar contexto). Úsala para verificar de verdad: animaciones de scroll, navegación por teclado, foco, contraste, y el pre-flight de calidad antes de dar algo por terminado.
 - **TasteSkill (`design-taste-frontend`)** — fuente: `Leonxlnx/taste-skill`. Reglas anti-genérico. **Alineada casi por completo** con la estética de §6 (un solo acento, sin gradientes de IA, sin scroll listeners a mano, sin tres tarjetas iguales). Se usa, **con estas sobrescrituras explícitas**, porque manda este archivo:
   - **Numeración de proyectos `01 / 02 / 03` SÍ se permite.** TasteSkill banea eyebrows numerados en general; acá es una secuencia real de proyectos y es parte del concepto de ficha técnica (§6). Excepción autorizada.
   - **Los guiones largos (em-dash) los decido yo.** La voz del sitio la define §8, no TasteSkill. Su prohibición de em-dash no aplica acá.
   - Su "hero discipline" (título ≤2 líneas, subtexto ≤20 palabras) se toma como **guía, no ley**; nuestro hero ya es corto, así que no debería chocar.
+
+**frontend-design (Anthropic)** — NO instalada local a este repo (corrección tras auditoría): corre desde el plugin global (`frontend-design@claude-code-plugins`), no tiene symlink ni entrada en `skills-lock.json`. Funciona igual, pero su clasificación como "local" era incorrecta y quedó corregida. Guía de diseño distintivo, se usa normal.
+
+**Uso proactivo, no solo cuando se recuerda.** Auditoría (16 ago 2026) encontró que TasteSkill y frontend-design solo se invocaron en Selected Work y About — nunca en Hero ni en Contact, porque nadie las pidió explícitamente esos turnos. La expectativa de este archivo es que se usen como parte normal de construir cualquier sección visual, no solo cuando se las nombra.
 
 *Nota de duplicado pendiente:* `frontend-design` quedó instalada dos veces a nivel global desde dos marketplaces distintos (`claude-code-plugins` y `claude-plugins-official`). No afecta el funcionamiento; limpiar cuando haya un momento (`claude plugin remove frontend-design@claude-plugins-official`, dejando la otra copia).
 
@@ -173,10 +176,15 @@ La identidad la da el **tratamiento** (grilla, mono, tabular, reglas finas, nume
 --ink:     #16181D;  /* texto — casi negro azulado */
 --grey:    #70747C;  /* texto secundario, metadatos */
 --line:    #E3E3E0;  /* hairlines */
---accent:  #2B4AF2;  /* acento único — cobalto eléctrico (digital, no esmalte pintado) */
+--accent:  #0B6670;  /* acento único de marca — teal técnico. 6,16:1 sobre --paper (medido) */
+--flag:    #8A6D0E;  /* color FUNCIONAL, no decorativo — solo para etiquetas de estado (Demo, sitio no disponible). ~4,54:1 sobre --paper, verificar en código antes de usar */
 ```
 
-Un solo acento (`--accent`), usado con moderación: enlaces, una cifra destacada, el marcador activo. El resto es tinta sobre papel. Sin sombras dramáticas. Bordes hairline. Radios pequeños o rectos.
+**Regla de los dos colores, sin excepción:** `--accent` es el único color de decisión visual — enlaces, títulos destacados, foco de teclado, cualquier cosa interactiva o de marca. `--flag` tiene un rol estrictamente funcional y acotado — únicamente etiquetas de estado de proyecto (ej. "Demo", "Sitio ya no disponible"). Nunca se usan de forma intercambiable ni compiten por el mismo elemento. Mismo patrón que `--parra`/`--rojo` en camiloflores.cl: el color de marca decide, el color funcional informa.
+
+**Historial de la decisión (16 ago 2026):** el acento original era cobalto (`#2B4AF2`), elegido para diferenciarse del ámbar/terra del demo Encuentro PyME. Se revisó porque (a) se sentía plano en uso, y (b) coincidía en familia (azul sobre claro) con el `--azul` de camiloflores.cl — coincidencia no detectada en la decisión original. Se evaluaron 5 direcciones (cobalto más denso, teal, magenta, lima, solo-tipografía-sin-color) y se eligió teal por diferenciarse de las otras dos paletas del ecosistema y por buen contraste medido.
+
+El resto es tinta sobre papel. Sin sombras dramáticas. Bordes hairline. Radios pequeños o rectos.
 
 ### Tipografía (vía `next/font`, subset latino)
 
@@ -295,8 +303,8 @@ Todo en **inglés**. Lo que falte es `TODO:` y se pregunta.
 - Enlaces: GitHub `https://github.com/r3ckleszz1` · LinkedIn `https://linkedin.com/in/camilo-flores`
 
 ### Selected work (3)
-1. **camiloflores.cl** — sales site for a local web-dev practice. No UI framework, no client JS beyond a live load-time meter; the speed is the argument. Links: Live + Code. Métricas: `TODO:` medidas (Performance, CLS, JS).
-2. **Encuentro PyME Aconcagua** — demo event landing with a real registration form that works with **no client JS** (Cloudflare Worker + Resend, native POST). Rotularlo como **demo/ejemplo**. Links: Live + Code. Métricas: `TODO:` medidas.
+1. **camiloflores.cl** — sales site for a local web-dev practice. No UI framework, no client JS beyond a live load-time meter; the speed is the argument. Links: Live + Code. Métricas (PageSpeed móvil, 16 ago 2026): Performance 97 · CLS 0 · JS mínimo.
+2. **Encuentro PyME Aconcagua** — demo event landing with a real registration form that works with **no client JS** (Cloudflare Worker + Resend, native POST). Rotularlo como **demo/ejemplo**. Links: Live + Code. Métricas (PageSpeed móvil, 16 ago 2026): Performance 100 · CLS 0 · JS mínimo.
 3. **GVE Sistemas** — client website (built end-to-end). **La empresa cerró y el sitio ya no está en línea: NO poner enlace "Live" roto.** Se presenta como experiencia con el testimonio (permiso concedido): *"Trabajar con Camilo Flores fue una experiencia excelente…"* — **Gonzalo Toro, CEO, ITQ Internacional.** (Traducir al inglés con cuidado o mantener la cita en español con nota; a decidir.)
 
 ### About / empleo
@@ -319,8 +327,9 @@ Antes de que el sitio sirva de verdad, cosas que **solo tú** resuelves y no son
 1. **Consistencia de entidad** (§10): las URLs ya están confirmadas (GitHub `r3ckleszz1`, LinkedIn `camilo-flores`). Falta verificar que el nombre, la descripción y la foto (si hay) coincidan entre las tres plataformas — eso sigue pendiente de tu parte.
 2. **El CV en PDF** al día.
 3. **Decidir el dominio** y si nombras (o no) tu empleo actual.
-4. **Medir** las métricas reales de los tres proyectos para no publicar cifras sin medir.
+4. **Medir** las métricas reales de los tres proyectos para no publicar cifras sin medir. ✅ Hecho (PageSpeed móvil, 16 ago 2026): portafolio 99/100 Rendimiento (LCP 2,0s, CLS 0, TBT 20ms), camiloflores.cl 97/100 (LCP 1,8s, CLS 0), demo Encuentro PyME 100/100 (LCP 1,4s, CLS 0). Quedan dos hallazgos anotados abajo, aceptados como pendientes no urgentes.
 5. **Limpiar el duplicado de `frontend-design`** a nivel global (§4) — no urgente, cosmético.
-6. **Recortar el archivo de polyfills legacy** (~110 KB sin comprimir, vía `browserslist` más moderno) — no afecta métricas hoy, es peso muerto en el hosting. Baja prioridad, antes de llamar al sitio "terminado".
+6. **Recortar el archivo de polyfills legacy** (~110 KB sin comprimir, vía `browserslist` más moderno) en el propio portafolio. PageSpeed ya lo señala con números concretos: "JavaScript antiguo" (~14 KiB) y "JS que no se usa" (~56 KiB), y es la causa más probable de los 20ms de TBT (único de los tres proyectos con TBT > 0). Decisión: publicar v1 tal cual (99/100 sigue siendo sobresaliente) y arreglar después — no bloquea el lanzamiento.
+7. **camiloflores.cl bajó de 100 a 97** entre mediciones (Speed Index subió a 3,9s desde 1,5s; probablemente por la imagen de la sección "Ejemplo" agregada después). Además, PageSpeed marca un problema de accesibilidad ahí: los `<dl>` no contienen solo grupos `<dt>`/`<dd>` ordenados correctamente (posible causa: la ficha técnica de Sobre mí o las métricas de "Ejemplo"). Decisión: anotado, no urgente con 97/91 — revisar cuando haya tiempo, en el repo de camiloflores.cl, no en este.
 
 Y el recordatorio de fondo: este es tu tercer proyecto activo más un trabajo full-time. Es una apuesta legítima pero nueva. Constrúyela sabiendo que compite por tus 5-10 horas con lo demás; mínima y excelente antes que grande y a medias.
