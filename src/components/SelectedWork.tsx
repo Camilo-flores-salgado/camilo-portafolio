@@ -105,15 +105,10 @@ function ProjectLinks({ links }: { links: ProjectLink[] }) {
 
 export default function SelectedWork() {
   return (
-    // pb-64: el revelado del último proyecto (animation-range: ... contain
-    // 50%, ver globals.css) necesita ~150px de scroll disponibles debajo de
-    // él para completarse. Sin esto es la última sección de la página, así
-    // que no hay contenido después que le dé ese margen. Se puede angostar
-    // o quitar cuando "About"/"Contact" queden debajo.
     <section
       id="work"
       aria-labelledby="selected-work-heading"
-      className="px-6 pt-20 pb-64 sm:px-10 sm:pt-28"
+      className="px-6 pt-20 pb-20 sm:px-10 sm:pt-28 sm:pb-28"
     >
       <h2
         id="selected-work-heading"

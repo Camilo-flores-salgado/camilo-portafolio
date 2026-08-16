@@ -61,9 +61,11 @@ Corolario: acá la excelencia técnica **no** es invisible (como en el sitio de 
 | Animación | CSS scroll-driven + scroll-snap nativo primero; Framer Motion solo si hace falta y con presupuesto (§7) |
 | Tipografías | `next/font` (self-host automático, sin CLS), subset latino |
 | Imágenes | Pre-optimizadas a AVIF a mano; `next/image` con `unoptimized` (el export estático no corre el optimizador) o `<img>` con tamaño declarado |
-| Hosting | Cloudflare, deploy automático desde la rama de producción |
+| Hosting | **Vercel**, deploy automático desde la rama de producción |
 | Dominio | `TODO:` (para público internacional, un `.dev` se lee bien; a decidir) |
 | Contacto | correo + GitHub + LinkedIn + CV en PDF. Sin formularios |
+
+**Por qué Vercel acá y Cloudflare en los otros dos proyectos:** los otros dos sitios usan Cloudflare por el POP en Santiago (latencia para clientes chilenos) y su analítica sin cookies — ninguna de esas dos razones aplica a una audiencia de reclutadores internacionales. Vercel, además de servir el export estático sin fricción, es la empresa creadora de Next.js: para un portafolio que demuestra dominio de ese framework, desplegarlo ahí es una señal más de fluidez con el ecosistema completo. Sin analítica por defecto (no exigida para este sitio); si se agrega alguna, evaluar su peso contra el margen de ~9 KB antes de instalarla.
 
 **Por qué Next/React acá y Astro allá:** no es contradicción, es la herramienta correcta para *esta* audiencia. El mercado laboral corre sobre React y Next y muchos reclutadores filtran por esas palabras. Mostrarlos **es** parte del trabajo del sitio. Pero Next no es excusa para un sitio pesado: la disciplina de rendimiento se traslada, no se relaja (§5).
 
@@ -304,7 +306,7 @@ Todo en **inglés**. Lo que falte es `TODO:` y se pregunta.
 ### Contact
 - Correo: `houdini.dev@outlook.com`
 - GitHub: `https://github.com/r3ckleszz1` · LinkedIn: `https://linkedin.com/in/camilo-flores`
-- CV: `public/cv-camilo-flores.pdf`, descargable (`download`). Enlace de descarga directa, sin `target="_blank"`.
+- CV: PDF, descargable. Archivo: `public/cv-camilo-flores.pdf` (colocarlo ahí antes de correr el prompt de Contact — Claude Code no debe inventar el archivo ni un placeholder de contenido, solo enlazarlo). Es descarga directa, no abre pestaña nueva: no necesita el aviso `sr-only` de pestaña externa, pero sí un texto claro tipo "Download CV (PDF)".
 
 ### Dominio
 - `TODO:` confirmar (posible `.dev` para público internacional).
