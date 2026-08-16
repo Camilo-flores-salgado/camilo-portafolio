@@ -72,6 +72,10 @@ Corolario: acá la excelencia técnica **no** es invisible (como en el sitio de 
 ### Prohibiciones de dependencias
 No instales nada sin preguntar. Explica qué resuelve, cuánto pesa (en KB al bundle de cliente), y la alternativa nativa. Framer Motion pesa: si se propone, se justifica contra CSS scroll-driven, y se carga solo donde se use.
 
+### Nota de plataforma: Next.js 16 y CLAUDE.md
+
+Next 16 auto-detecta agentes de IA y, por defecto, edita `CLAUDE.md` al correr `next dev` (le agrega un bloque propio al final). Eso viola §4/§11. Ya está neutralizado: existe un `AGENTS.md` en la raíz con el bloque exacto que Next esperaría escribir, verificado contra su propio chequeo (`hasCurrentAgentRules`), así que Next nunca vuelve a tocar este archivo. **No borrar `AGENTS.md` pensando que es redundante** — es lo que blinda este documento.
+
 ---
 
 ## 4. Herramientas y skills — jerarquía y gobernanza
@@ -133,6 +137,16 @@ Este sitio no va a ser 0 KB de JS como los de Astro, **a propósito** — su tra
 - Sin banner de cookies (analítica sin cookies o ninguna). Sin fuentes de terceros por CDN. Sin embeds pesados.
 
 Regla: tras cualquier cambio que toque animaciones, imágenes, fuentes o dependencias, **medir con PageSpeed contra el deploy.** El propio sitio es el primer proyecto del portafolio; sus métricas se muestran, así que tienen que ser reales y buenas.
+
+### Línea base medida — margen real disponible
+
+Medido contra el build de producción (Next 16 + React 19 + App Router, export estático), **no estimado**: first-load JS real es **~111 KB en Brotli** (~130 KB en gzip). Cloudflare sirve Brotli por defecto a navegadores modernos, que es lo que mide Lighthouse/PageSpeed — ese es el número que cuenta contra el límite de 120 KB de arriba.
+
+De esos ~111 KB, ~102 KB son framework (React + ReactDOM + Scheduler ~61 KB, runtime del App Router ~41 KB) — no código de este proyecto, y no baja sin cambiar de router o de framework, lo cual está fuera de alcance (§3). El código propio (`layout.tsx` + `page.tsx` de prueba) pesa ~3,3 KB.
+
+**Margen real disponible para todo el sitio (hero, selected work, about, contact, animaciones): ~9 KB.** Es apretado. Consecuencia directa: Framer Motion completo (~30-50 KB) no cabe sin recortar otra cosa — es una razón más, con número real detrás, para que CSS scroll-driven nativo (§7) sea la vía por defecto y no la preferencia.
+
+*Nota aparte, no afecta el presupuesto:* el archivo de polyfills legacy (`nomodule`, ~110 KB sin comprimir) se sube al deploy pero ningún navegador moderno lo descarga — no cuenta en ninguna métrica de Lighthouse. Es peso muerto en el hosting, de baja prioridad; ver §14.
 
 ---
 
@@ -274,7 +288,7 @@ Todo en **inglés**. Lo que falte es `TODO:` y se pregunta.
   - Focus: performance & accessibility
   - Stack: Next.js · React · TypeScript
   - Based in: San Felipe, Chile
-- Enlaces: GitHub `TODO:`, LinkedIn `TODO:`
+- Enlaces: GitHub `https://github.com/r3ckleszz1` · LinkedIn `https://linkedin.com/in/camilo-flores`
 
 ### Selected work (3)
 1. **camiloflores.cl** — sales site for a local web-dev practice. No UI framework, no client JS beyond a live load-time meter; the speed is the argument. Links: Live + Code. Métricas: `TODO:` medidas (Performance, CLS, JS).
@@ -287,7 +301,7 @@ Todo en **inglés**. Lo que falte es `TODO:` y se pregunta.
 
 ### Contact
 - Correo: `TODO:` (profesional)
-- GitHub: `TODO:` · LinkedIn: `TODO:`
+- GitHub: `https://github.com/r3ckleszz1` · LinkedIn: `https://linkedin.com/in/camilo-flores`
 - CV: `TODO:` PDF, descargable. Enlace abre/descarga; si abre pestaña, avisar con `sr-only`.
 
 ### Dominio
@@ -298,10 +312,11 @@ Todo en **inglés**. Lo que falte es `TODO:` y se pregunta.
 ## 14. Qué falta — antes y después de construir
 
 Antes de que el sitio sirva de verdad, cosas que **solo tú** resuelves y no son código:
-1. **Consistencia de entidad** (§10): dejar GitHub y LinkedIn con el mismo nombre, descripción y foto que el portafolio. Es lo que más rinde.
+1. **Consistencia de entidad** (§10): las URLs ya están confirmadas (GitHub `r3ckleszz1`, LinkedIn `camilo-flores`). Falta verificar que el nombre, la descripción y la foto (si hay) coincidan entre las tres plataformas — eso sigue pendiente de tu parte.
 2. **El CV en PDF** al día.
 3. **Decidir el dominio** y si nombras (o no) tu empleo actual.
 4. **Medir** las métricas reales de los tres proyectos para no publicar cifras sin medir.
 5. **Limpiar el duplicado de `frontend-design`** a nivel global (§4) — no urgente, cosmético.
+6. **Recortar el archivo de polyfills legacy** (~110 KB sin comprimir, vía `browserslist` más moderno) — no afecta métricas hoy, es peso muerto en el hosting. Baja prioridad, antes de llamar al sitio "terminado".
 
 Y el recordatorio de fondo: este es tu tercer proyecto activo más un trabajo full-time. Es una apuesta legítima pero nueva. Constrúyela sabiendo que compite por tus 5-10 horas con lo demás; mínima y excelente antes que grande y a medias.

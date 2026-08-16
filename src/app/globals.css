@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+:root {
+  /* §6 — tokens de color, tal cual CLAUDE.md */
+  --paper: #f6f6f4;
+  --ink: #16181d;
+  --grey: #70747c;
+  --line: #e3e3e0;
+  --accent: #2b4af2;
+}
+
+@theme inline {
+  /* Colores: alias hacia los tokens de :root para generar bg-paper, text-ink, etc. */
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-grey: var(--grey);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+
+  /*
+   * Fuentes: next/font/google inyecta estas custom properties en <html>
+   * (ver layout.tsx). "inline" evita que Tailwind intente resolver el
+   * valor en build time — el font-family real solo existe en runtime.
+   */
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-mono: var(--font-mono);
+
+  /*
+   * Escala tipográfica explícita (§6). clamp() en los tamaños que crecen
+   * con el viewport: hero, display de sección, números de ficha 01/02/03.
+   * Nada de tamaños arbitrarios sueltos en componentes.
+   */
+  --text-hero: clamp(2.5rem, 1.8rem + 3.5vw, 5rem);
+  --text-hero--line-height: 1.05;
+
+  --text-display: clamp(2rem, 1.65rem + 1.75vw, 3.25rem);
+  --text-display--line-height: 1.1;
+
+  --text-project-number: clamp(1.75rem, 1.5rem + 1.25vw, 2.75rem);
+  --text-project-number--line-height: 1;
+
+  --text-body-lg: clamp(1.125rem, 1.05rem + 0.35vw, 1.375rem);
+  --text-body-lg--line-height: 1.5;
+
+  /* Wordmark del header — fijo, no necesita crecer con el viewport. */
+  --text-nav: 1.125rem;
+  --text-nav--line-height: 1.2;
+
+  --text-body: 1rem;
+  --text-body--line-height: 1.6;
+
+  --text-meta: 0.8125rem;
+  --text-meta--line-height: 1.4;
+
+  --text-micro: 0.75rem;
+  --text-micro--line-height: 1.3;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+/*
+ * Revelado de entrada del hero (§7) — 100% CSS, sin JS. Corre solo al
+ * cargar la página. Con prefers-reduced-motion, la regla no se aplica
+ * y el contenido queda visible de inmediato, sin animación.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-reveal {
+    animation: hero-reveal 500ms ease-out both;
+  }
+}
+
+@keyframes hero-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/*
+ * Revelado de "Selected work" (§7) — scroll-driven nativo, 100% CSS, sin
+ * JS ni IntersectionObserver. animation-timeline: view() liga la animación
+ * a la posición del elemento en el viewport: el usuario sigue controlando
+ * el scroll en todo momento (rueda, barra, teclado), nada lo intercepta.
+ *
+ * Soporte (verificado, no estimado): Chrome/Edge desde 2023, Safari desde
+ * la 26 (sept. 2025). Firefox estable aún no lo soporta (agosto 2026) — al
+ * no reconocer animation-timeline, el navegador cae a animation-timeline:
+ * auto y reproduce la animación una vez al cargar la página en vez de al
+ * hacer scroll. En ningún caso el contenido queda oculto.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .project-reveal {
+    animation: project-reveal 600ms ease-out both;
+    animation-timeline: view();
+    /*
+     * "entry" solo (0%-100% de la fase de entrada) mide ~474px en este
+     * layout — menos que un viewport. Un scroll normal (rueda, trackpad)
+     * cubre eso en un solo gesto, así que el fade terminaba antes de que
+     * el bloque estuviera realmente a la vista: se sentía como que
+     * "aparecía" en vez de revelarse. Extender el final a la mitad del
+     * rango "cover" completo (todo el tiempo que el proyecto pasa en
+     * pantalla) casi duplica la distancia de scroll del fade, así se
+     * percibe mientras el bloque ya está legible, no solo asomando.
+     */
+    animation-range: entry 0% contain 50%;
+  }
+}
+
+@keyframes project-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
