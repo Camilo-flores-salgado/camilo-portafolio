@@ -22,8 +22,8 @@ const ibmPlexMono = IBM_Plex_Mono({
 
 // TODO: title y description finales (§13) — copy real llega en un prompt siguiente
 export const metadata: Metadata = {
-  title: "TODO: page title (§13)",
-  description: "TODO: meta description (§13)",
+  title: "Camilo Flores - Web Developer",
+  description: "Camilo Flores' personal website and portfolio. Web Developer based in Chile.",
 };
 
 // Gesto para quien abre devtools -- la audiencia técnica real del sitio.
