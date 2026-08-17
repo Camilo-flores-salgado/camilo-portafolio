@@ -11,7 +11,7 @@ export default function Hero() {
         Web Developer
       </p>
       <h1 className="font-display text-hero max-w-4xl text-balance">
-        I build fast, accessible websites — by hand.
+        I build fast, accessible websites — by <span className="text-accent">hand</span>.
       </h1>
       <dl className="flex flex-col gap-6 sm:flex-row sm:gap-12">
         {facts.map((fact) => (

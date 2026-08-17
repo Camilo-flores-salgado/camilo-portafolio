@@ -151,7 +151,9 @@ De esos ~111 KB, ~102 KB son framework (React + ReactDOM + Scheduler ~61 KB, run
 
 **Margen real disponible para todo el sitio (hero, selected work, about, contact, animaciones): ~9 KB.** Es apretado. Consecuencia directa: Framer Motion completo (~30-50 KB) no cabe sin recortar otra cosa — es una razón más, con número real detrás, para que CSS scroll-driven nativo (§7) sea la vía por defecto y no la preferencia.
 
-*Nota aparte, no afecta el presupuesto:* el archivo de polyfills legacy (`nomodule`, ~110 KB sin comprimir) se sube al deploy pero ningún navegador moderno lo descarga — no cuenta en ninguna métrica de Lighthouse. Es peso muerto en el hosting, de baja prioridad; ver §14.
+*Nota aparte, no afecta el presupuesto:* el archivo de polyfills legacy (`nomodule`, 112.594 bytes sin comprimir, medido) se sube al deploy pero ningún navegador moderno lo descarga — no cuenta en ninguna métrica de Lighthouse. Es peso muerto en el hosting, de baja prioridad; ver §14.
+
+**Investigado (17 ago 2026):** se configuró `browserslist` en `package.json` (evergreen Chrome/Edge/Firefox/Safari, sin IE) para intentar recortarlo. **No tuvo ningún efecto — el archivo midió exactamente los mismos 112.594 bytes antes y después.** Es un problema conocido de Next.js 16: el polyfill-nomodule viene hardcodeado internamente y no respeta `browserslist` ([vercel/next.js discusión #85815](https://github.com/vercel/next.js/discussions/85815)). No hay forma de eliminarlo desde configuración del proyecto. El `browserslist` se dejó igual (es correcto para otras herramientas del build, como autoprefixer), pero el archivo de polyfills sigue siendo peso muerto inevitable con esta versión de Next.
 
 ---
 
@@ -212,7 +214,11 @@ Implementado vía `@media (prefers-color-scheme: dark)` sobre `:root` en `global
 ### Piso de calidad
 Responsive hasta 360px. Foco de teclado visible. `prefers-reduced-motion` respetado (§7). Contraste AA mínimo, AAA en cuerpo; verifica los ratios reales (el cobalto sobre papel y el gris sobre papel se calculan, no se estiman). Enlaces que abren pestaña nueva lo avisan con `sr-only`. Todo indexable y semántico (§10).
 
-**Excepción de contraste, documentada:** `--accent` sobre `--paper` da **5,77:1** (medido). Cumple AA (≥4,5:1) con margen, pero **no alcanza AAA (7:1) en ningún peso ni tamaño dentro del rango de `text-body-lg`** — es un límite matemático del color mismo, no de la implementación. Los usos de `--accent` como elemento de UI (tags de proyecto, outline de foco) no están sujetos a la regla de AAA de cuerpo, así que no aplica ahí. Cuando `--accent` se use como énfasis dentro de **prosa de cuerpo** (como en About, §13), el estándar exigido es **AA, no AAA**, a propósito y por excepción — mantenerlo a spans cortos (2-4 palabras), nunca párrafos completos en ese color.
+**Contraste de `--accent`, medido (16-17 ago 2026, con el teal actual):** `#0B6670` sobre `--paper` claro da **6,16:1**; `#12A9BA` (versión dark, ver más abajo) sobre `--paper` oscuro da **6,27:1**. Dos casos distintos, según el tamaño del texto donde se use:
+- **Texto de cuerpo** (`text-body-lg`, 18-22px, ej. el span de About en §13): el umbral exigido es AAA normal (7:1) — **no se alcanza, en ningún peso**, con ninguno de los dos valores. Es un límite matemático del color, no de la implementación. Excepción documentada y a propósito: ahí el estándar exigido baja a **AA (4,5:1)**, que sí se cumple con margen — mantenerlo a spans cortos (2-4 palabras), nunca párrafos completos en ese color.
+- **Texto grande** (≥24px por tamaño, sin importar el peso — WCAG lo clasifica como "texto grande" solo por tamaño a partir de ahí; ej. la palabra "hand" en el `<h1>` del Hero, verificado en 8 breakpoints entre 41,4px y 80px): el umbral es AAA de texto grande (4,5:1) — **se cumple limpio, sin excepción**, con los dos valores medidos arriba.
+
+Los usos de `--accent` como elemento de UI (tags de proyecto, outline de foco) no están sujetos a ninguna de estas dos reglas de cuerpo/texto grande.
 
 ---
 
