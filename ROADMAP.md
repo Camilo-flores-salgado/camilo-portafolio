@@ -26,6 +26,7 @@ Calidad medida:
 - [x] Presupuesto de JS respetado de punta a punta (~111,1 KB Brotli, Server Components puros)
 - [x] PageSpeed real: 99/100 Rendimiento, CLS 0 (16 ago 2026)
 - [x] Auditoría de frontend-design + TasteSkill en las 4 secciones, sin hallazgos bloqueantes
+- [x] Métricas reales de camiloflores.cl y Encuentro PyME sincronizadas en Selected Work (Performance/CLS/JS, tomadas de CLAUDE.md §13) — ya no quedan placeholders "TODO" en la fila de métricas de esos dos proyectos. GVE sigue sin fila (nunca tuvo, se presenta con testimonio).
 - [ ] **Punto 7 de CLAUDE.md §12 — validación humana.** Mostrarle el sitio a alguien (idealmente perfil reclutador) y confirmar que en 15 segundos entiende quién eres, con qué trabajas, y cómo contactarte. Es el único chequeo que de verdad importa; nada de lo demás lo reemplaza.
 
 Consistencia externa:

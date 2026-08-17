@@ -34,8 +34,9 @@ type TestimonialProject = {
 
 type Project = ShippedProject | TestimonialProject;
 
-// TODO(§13): year y las métricas (Performance/CLS/JS) todavía no están
-// medidas -- TODO explícito a propósito, nunca un número inventado.
+// TODO(§13): year todavía no está definido -- TODO explícito a propósito,
+// nunca un número inventado. Métricas (PageSpeed móvil, 16 ago 2026) ya
+// están medidas y sincronizadas con CLAUDE.md §13.
 const projects: Project[] = [
   {
     kind: "shipped",
@@ -46,9 +47,9 @@ const projects: Project[] = [
     description:
       "Sales site for a local web-dev practice. No UI framework, no client JS beyond a live load-time meter; the speed is the argument.",
     metrics: [
-      { label: "Performance", value: "TODO" },
-      { label: "CLS", value: "TODO" },
-      { label: "JS", value: "TODO" },
+      { label: "Performance", value: "97" },
+      { label: "CLS", value: "0" },
+      { label: "JS", value: "Minimal" },
     ],
     links: [{ label: "Live", href: "https://www.camiloflores.cl/" }],
   },
@@ -61,9 +62,9 @@ const projects: Project[] = [
     description:
       "Demo event landing with a real registration form that works with no client JS (Cloudflare Worker + Resend, native POST).",
     metrics: [
-      { label: "Performance", value: "TODO" },
-      { label: "CLS", value: "TODO" },
-      { label: "JS", value: "TODO" },
+      { label: "Performance", value: "100" },
+      { label: "CLS", value: "0" },
+      { label: "JS", value: "Minimal" },
     ],
     links: [
       { label: "Live", href: "https://landingdemo1.houdini-dev.workers.dev/" },
@@ -130,8 +131,12 @@ function FormFlowDiagram() {
           width="86"
           height="44"
           rx="2"
+          vectorEffect="non-scaling-stroke"
           className="fill-none stroke-line"
         />
+        {/* Marcador de origen: único punto --accent en los 3 nodos, marca
+            dónde arranca el flujo (sin JS). No se repite en los otros dos. */}
+        <circle cx="3" cy="8" r="2" className="fill-accent" />
         <text
           x="46"
           y="27"
@@ -158,6 +163,7 @@ function FormFlowDiagram() {
           width="86"
           height="44"
           rx="2"
+          vectorEffect="non-scaling-stroke"
           className="fill-none stroke-line"
         />
         <text
@@ -186,6 +192,7 @@ function FormFlowDiagram() {
           width="86"
           height="44"
           rx="2"
+          vectorEffect="non-scaling-stroke"
           className="fill-none stroke-line"
         />
         <text
@@ -197,7 +204,14 @@ function FormFlowDiagram() {
           Resend
         </text>
 
-        <line x1="3" y1="68" x2="20" y2="68" className="stroke-accent" />
+        <line
+          x1="3"
+          y1="68"
+          x2="20"
+          y2="68"
+          vectorEffect="non-scaling-stroke"
+          className="stroke-accent"
+        />
         <text
           x="26"
           y="72"
