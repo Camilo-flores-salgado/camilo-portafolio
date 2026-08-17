@@ -26,6 +26,15 @@ export const metadata: Metadata = {
   description: "TODO: meta description (§13)",
 };
 
+// Gesto para quien abre devtools -- la audiencia técnica real del sitio.
+// Inline, sin componente de cliente ni estado: es la única línea de JS
+// propio del sitio, a propósito, y se mide en bytes exactos (§5).
+const devConsoleScript = `
+console.log("%cCamilo Flores — Web Developer", "font-size:14px;font-weight:700;color:#0B6670;");
+console.log("Most of this page's JS is React itself, not mine. Check the Network tab.");
+console.log("houdini.dev@outlook.com\\ngithub.com/r3ckleszz1");
+`;
+
 const personJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
@@ -54,6 +63,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
+        <script dangerouslySetInnerHTML={{ __html: devConsoleScript }} />
         {children}
       </body>
     </html>

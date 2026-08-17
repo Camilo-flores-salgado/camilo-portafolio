@@ -1,5 +1,5 @@
 type ProjectLink = {
-  label: "Live" | "Code";
+  label: "Live";
   href: string;
 };
 
@@ -13,10 +13,11 @@ type ShippedProject = {
   number: string;
   year: string;
   title: string;
-  badge?: string;
+  badges?: string[];
   description: string;
   metrics: MetricRow[];
   links: ProjectLink[];
+  diagram?: boolean;
 };
 
 type TestimonialProject = {
@@ -24,7 +25,7 @@ type TestimonialProject = {
   number: string;
   year: string;
   title: string;
-  badge?: string;
+  badges?: string[];
   description: string;
   quote: string;
   author: string;
@@ -33,15 +34,15 @@ type TestimonialProject = {
 
 type Project = ShippedProject | TestimonialProject;
 
-// TODO(§13): href="TODO" — reemplazar por las URLs reales de Live/Code de
-// cada proyecto. Los años y las métricas (Performance/CLS/JS) tampoco están
-// medidos todavía — TODO explícito a propósito, nunca un número inventado.
+// TODO(§13): year y las métricas (Performance/CLS/JS) todavía no están
+// medidas -- TODO explícito a propósito, nunca un número inventado.
 const projects: Project[] = [
   {
     kind: "shipped",
     number: "01",
     year: "TODO",
     title: "camiloflores.cl",
+    badges: ["Repo private"],
     description:
       "Sales site for a local web-dev practice. No UI framework, no client JS beyond a live load-time meter; the speed is the argument.",
     metrics: [
@@ -49,17 +50,14 @@ const projects: Project[] = [
       { label: "CLS", value: "TODO" },
       { label: "JS", value: "TODO" },
     ],
-    links: [
-      { label: "Live", href: "TODO" },
-      { label: "Code", href: "TODO" },
-    ],
+    links: [{ label: "Live", href: "https://www.camiloflores.cl/" }],
   },
   {
     kind: "shipped",
     number: "02",
     year: "TODO",
     title: "Encuentro PyME Aconcagua",
-    badge: "Demo",
+    badges: ["Demo", "Repo private"],
     description:
       "Demo event landing with a real registration form that works with no client JS (Cloudflare Worker + Resend, native POST).",
     metrics: [
@@ -68,16 +66,16 @@ const projects: Project[] = [
       { label: "JS", value: "TODO" },
     ],
     links: [
-      { label: "Live", href: "TODO" },
-      { label: "Code", href: "TODO" },
+      { label: "Live", href: "https://landingdemo1.houdini-dev.workers.dev/" },
     ],
+    diagram: true,
   },
   {
     kind: "testimonial",
     number: "03",
     year: "TODO",
     title: "GVE Sistemas",
-    badge: "Not currently live",
+    badges: ["Not currently live"],
     description: "Client website, built end-to-end.",
     quote: "Trabajar con Camilo Flores fue una experiencia excelente…",
     author: "Gonzalo Toro, CEO, ITQ Internacional",
@@ -102,6 +100,113 @@ function ProjectLinks({ links }: { links: ProjectLink[] }) {
         </a>
       ))}
     </div>
+  );
+}
+
+// Flujo real del formulario de inscripción del demo: <form> nativo, POST
+// directo a un Cloudflare Worker, que dispara el correo vía Resend. SVG
+// puro, cero JS -- el mismo hecho que ya cuenta la descripción del
+// proyecto, mostrado como diagrama en vez de solo prosa. --accent marca
+// el "0 client JS" porque es la decisión de ingeniería real detrás del
+// diagrama, no decoración.
+function FormFlowDiagram() {
+  return (
+    // viewBox pensado para el ancho real del contenedor en mobile (~310px,
+    // 360px de viewport menos el padding de la sección), no un número
+    // redondo arbitrario: a esa medida el factor de escala queda cerca de
+    // 1:1 (294 unidades -> ~310px), así el texto se lee al tamaño real de
+    // fuente, no reducido por el escalado del SVG. En desktop (max-w-md,
+    // 448px) el mismo viewBox escala HACIA ARRIBA, nunca hacia abajo.
+    <figure className="mt-8 max-w-md">
+      <svg
+        viewBox="0 0 294 85"
+        role="img"
+        aria-label="Diagram: native HTML form POST goes directly to a Cloudflare Worker, which sends the email through Resend. Zero client JavaScript."
+        className="w-full"
+      >
+        <rect
+          x="3"
+          y="8"
+          width="86"
+          height="44"
+          rx="2"
+          className="fill-none stroke-line"
+        />
+        <text
+          x="46"
+          y="27"
+          textAnchor="middle"
+          className="fill-ink font-mono text-[11px] uppercase tracking-wide"
+        >
+          <tspan x="46" dy="0">Native</tspan>
+          <tspan x="46" dy="14">&lt;form&gt; POST</tspan>
+        </text>
+
+        <text
+          x="96.5"
+          y="33"
+          textAnchor="middle"
+          className="fill-ink font-mono text-[11px]"
+          aria-hidden="true"
+        >
+          →
+        </text>
+
+        <rect
+          x="104"
+          y="8"
+          width="86"
+          height="44"
+          rx="2"
+          className="fill-none stroke-line"
+        />
+        <text
+          x="147"
+          y="27"
+          textAnchor="middle"
+          className="fill-ink font-mono text-[11px] uppercase tracking-wide"
+        >
+          <tspan x="147" dy="0">Cloudflare</tspan>
+          <tspan x="147" dy="14">Worker</tspan>
+        </text>
+
+        <text
+          x="197.5"
+          y="33"
+          textAnchor="middle"
+          className="fill-ink font-mono text-[11px]"
+          aria-hidden="true"
+        >
+          →
+        </text>
+
+        <rect
+          x="205"
+          y="8"
+          width="86"
+          height="44"
+          rx="2"
+          className="fill-none stroke-line"
+        />
+        <text
+          x="248"
+          y="34"
+          textAnchor="middle"
+          className="fill-ink font-mono text-[11px] uppercase tracking-wide"
+        >
+          Resend
+        </text>
+
+        <line x1="3" y1="68" x2="20" y2="68" className="stroke-accent" />
+        <text
+          x="26"
+          y="72"
+          className="fill-accent font-mono text-[11px] uppercase tracking-wide"
+        >
+          0 client JS
+        </text>
+      </svg>
+    </figure>
   );
 }
 
@@ -131,11 +236,14 @@ export default function SelectedWork() {
               <span className="font-mono text-meta text-ink uppercase tracking-wide">
                 {project.year}
               </span>
-              {project.badge ? (
-                <span className="rounded-sm border border-flag px-2 py-0.5 font-mono text-micro text-flag uppercase tracking-wide">
-                  {project.badge}
+              {project.badges?.map((badge) => (
+                <span
+                  key={badge}
+                  className="rounded-sm border border-flag px-2 py-0.5 font-mono text-micro text-flag uppercase tracking-wide"
+                >
+                  {badge}
                 </span>
-              ) : null}
+              ))}
             </div>
 
             <h3 className="font-display text-display mt-6">
@@ -174,6 +282,9 @@ export default function SelectedWork() {
             )}
 
             <ProjectLinks links={project.links} />
+            {project.kind === "shipped" && project.diagram ? (
+              <FormFlowDiagram />
+            ) : null}
           </li>
         ))}
       </ol>
