@@ -6,7 +6,39 @@
   --ink: #16181d;
   --grey: #70747c;
   --line: #e3e3e0;
-  --accent: #2b4af2;
+  --accent: #0b6670;
+  --flag: #8a6d0e;
+}
+
+/*
+ * Modo oscuro automático (§9) — 100% CSS, cero JS, reacciona a la
+ * preferencia del sistema. Sin toggle: si el usuario no pidió oscuro, no
+ * pasa nada.
+ *
+ * paper/ink: se invierten los mismos dos valores del modo claro (no son
+ * colores nuevos) — 16,41:1 en ambos sentidos, verificado.
+ *
+ * accent/flag: los valores del modo claro NO sirven invertidos (verificado
+ * en código, no asumido) — #0B6670 sobre el nuevo fondo oscuro da 2,66:1 y
+ * #8A6D0E da 3,61:1, ambos bajo AA. Se aclararon en el mismo matiz (HSL,
+ * misma H/S, solo sube L) hasta que cada uno superó AA con margen real:
+ * --accent 6,27:1, --flag 6,08:1 (contra --paper oscuro).
+ *
+ * line/grey: mismo criterio — line reproduce la sutileza del hairline claro
+ * (1,19:1 claro → 1,25:1 oscuro, misma sensación). grey no se usa hoy en
+ * ningún componente (--ink cubre el texto chico, ver nota de contraste más
+ * abajo); se define igual por completitud del set de tokens, verificado
+ * arriba de AA (6,53:1) por si se usa a futuro.
+ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #16181d;
+    --ink: #f6f6f4;
+    --grey: #999da5;
+    --line: #282b32;
+    --accent: #12a9ba;
+    --flag: #b99213;
+  }
 }
 
 @theme inline {
@@ -16,6 +48,7 @@
   --color-grey: var(--grey);
   --color-line: var(--line);
   --color-accent: var(--accent);
+  --color-flag: var(--flag);
 
   /*
    * Fuentes: next/font/google inyecta estas custom properties en <html>

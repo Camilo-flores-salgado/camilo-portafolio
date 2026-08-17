@@ -24,6 +24,7 @@ type TestimonialProject = {
   number: string;
   year: string;
   title: string;
+  badge?: string;
   description: string;
   quote: string;
   author: string;
@@ -76,6 +77,7 @@ const projects: Project[] = [
     number: "03",
     year: "TODO",
     title: "GVE Sistemas",
+    badge: "Not currently live",
     description: "Client website, built end-to-end.",
     quote: "Trabajar con Camilo Flores fue una experiencia excelente…",
     author: "Gonzalo Toro, CEO, ITQ Internacional",
@@ -129,8 +131,8 @@ export default function SelectedWork() {
               <span className="font-mono text-meta text-ink uppercase tracking-wide">
                 {project.year}
               </span>
-              {project.kind === "shipped" && project.badge ? (
-                <span className="rounded-sm border border-accent px-2 py-0.5 font-mono text-micro text-accent uppercase tracking-wide">
+              {project.badge ? (
+                <span className="rounded-sm border border-flag px-2 py-0.5 font-mono text-micro text-flag uppercase tracking-wide">
                   {project.badge}
                 </span>
               ) : null}

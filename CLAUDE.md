@@ -186,6 +186,21 @@ La identidad la da el **tratamiento** (grilla, mono, tabular, reglas finas, nume
 
 El resto es tinta sobre papel. Sin sombras dramáticas. Bordes hairline. Radios pequeños o rectos.
 
+### Modo oscuro (automático, 16 ago 2026)
+
+Implementado vía `@media (prefers-color-scheme: dark)` sobre `:root` en `globals.css` — 100% CSS, cero JS, sin toggle. Reacciona solo a la preferencia del sistema.
+
+```css
+--paper:   #16181D;  /* = --ink del modo claro, invertido */
+--ink:     #F6F6F4;  /* = --paper del modo claro, invertido — 16,41:1 entre ambos */
+--grey:    #999DA5;  /* 6,53:1 sobre --paper oscuro (medido); sin uso real en componentes hoy */
+--line:    #282B32;  /* 1,25:1 sobre --paper oscuro — misma sutileza que el hairline claro (1,19:1) */
+--accent:  #12A9BA;  /* 6,27:1 sobre --paper oscuro (medido) */
+--flag:    #B99213;  /* 6,08:1 sobre --paper oscuro (medido) */
+```
+
+`--accent`/`--flag` del modo claro **no sirven invertidos tal cual** (verificado en código: `#0B6670` da 2,66:1 y `#8A6D0E` da 3,61:1 sobre el nuevo fondo oscuro, ambos bajo AA) — se aclararon en el mismo matiz (mismo H/S en HSL, solo sube L) hasta superar AA con margen real. `paper`/`ink` sí son una inversión literal de los mismos dos valores del modo claro, sin colores nuevos.
+
 ### Tipografía (vía `next/font`, subset latino)
 
 - **Display / titulares:** Space Grotesk (700) — grotesca con carácter técnico.
@@ -241,7 +256,9 @@ El efecto pedido: cada proyecto se siente como una pantalla vertical que se reve
 4. **Contact** — correo, GitHub, LinkedIn, y descarga de CV (PDF).
 
 **Fuera de alcance en v1. No construir ni proponer:**
-blog, i18n (es solo inglés), modo oscuro (a menos que se decida a propósito como demostración; por defecto no), CMS, formulario de contacto, panel de estadísticas, más rutas. Ideas nuevas → `IDEAS.md`.
+blog, i18n (es solo inglés), CMS, formulario de contacto, panel de estadísticas, más rutas. Ideas nuevas → `IDEAS.md`.
+
+**Modo oscuro:** decidido a propósito como demostración (16 ago 2026) — ver §6. Automático vía `prefers-color-scheme`, sin toggle, cero JS.
 
 Recordatorio de foco: el portafolio es una apuesta **nueva** (empleo), distinta de la apuesta local. Con 5-10 h/semana y otros dos proyectos vivos, el mayor riesgo sigue siendo el alcance y la dispersión. v1 mínima y excelente.
 
