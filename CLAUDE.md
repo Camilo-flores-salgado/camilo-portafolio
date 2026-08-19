@@ -188,9 +188,16 @@ La identidad la da el **tratamiento** (grilla, mono, tabular, reglas finas, nume
 
 El resto es tinta sobre papel. Sin sombras dramáticas. Bordes hairline. Radios pequeños o rectos.
 
-### Modo oscuro (automático, 16 ago 2026)
+### Modo oscuro (automático por defecto, con override manual — 19 ago 2026)
 
-Implementado vía `@media (prefers-color-scheme: dark)` sobre `:root` en `globals.css` — 100% CSS, cero JS, sin toggle. Reacciona solo a la preferencia del sistema.
+Base sin cambios: `@media (prefers-color-scheme: dark)` sobre `:root` en `globals.css` sigue siendo el comportamiento por defecto — si el usuario nunca tocó el botón de tema, es 100% CSS, cero JS, igual que desde el 16 ago 2026.
+
+**Override manual (nuevo, 19 ago 2026):** botón `ThemeToggle.tsx` (ícono sol/luna, SVG inline, en `Header.tsx`, visible en todas las secciones). Arquitectura:
+- Los mismos valores dark de abajo también viven en un selector `.dark { ... }`, más un `.light { ... }` equivalente con los valores claros — necesarios los dos: `.dark` le gana a la media query cuando el sistema pide claro pero el usuario forzó oscuro; `.light` le gana a la media query cuando el sistema pide oscuro pero el usuario forzó claro. Las cuatro reglas (`:root` base, media query, `.dark`, `.light`) tienen la misma especificidad — el orden en `globals.css` decide cuál gana, no hay `!important`.
+- Script inline crudo en un `<head>` explícito de `layout.tsx` (mismo patrón que el JSON-LD y el gesto de consola, sin `next/script`): lee `localStorage.getItem("theme")` y aplica la clase antes de que el navegador pinte nada, si hay preferencia guardada. Si no hay nada guardado, no toca el DOM.
+- `<html>` necesita `suppressHydrationWarning` porque ese script muta su `className` antes de que React hidrate — mismatch esperado y documentado, mismo patrón que usa `next-themes`.
+- El ícono (qué mitad se ve) lo resuelve CSS puro con la misma cascada de arriba — no depende de que el componente cliente monte, cero riesgo de parpadeo también ahí.
+- Peso medido (19 ago 2026): botón + lógica del toggle, ~630 B Brotli (bundle de cliente); script anti-parpadeo inline, ~100 B Brotli equivalente (no es un chunk aparte, va embebido en el HTML — no cuenta en la métrica formal de "first-load JS" de Lighthouse, pero se midió igual). Total ~730 B contra el margen de ~8,65 KB.
 
 ```css
 --paper:   #16181D;  /* = --ink del modo claro, invertido */
@@ -264,7 +271,7 @@ El efecto pedido: cada proyecto se siente como una pantalla vertical que se reve
 **Fuera de alcance en v1. No construir ni proponer:**
 blog, i18n (es solo inglés), CMS, formulario de contacto, panel de estadísticas, más rutas. Ideas nuevas → `IDEAS.md`.
 
-**Modo oscuro:** decidido a propósito como demostración (16 ago 2026) — ver §6. Automático vía `prefers-color-scheme`, sin toggle, cero JS.
+**Modo oscuro:** decidido a propósito como demostración (16 ago 2026) — ver §6. Automático vía `prefers-color-scheme` por defecto; desde el 19 ago 2026 tiene override manual (botón en el Header, persiste en `localStorage`).
 
 Recordatorio de foco: el portafolio es una apuesta **nueva** (empleo), distinta de la apuesta local. Con 5-10 h/semana y otros dos proyectos vivos, el mayor riesgo sigue siendo el alcance y la dispersión. v1 mínima y excelente.
 

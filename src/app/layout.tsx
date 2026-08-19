@@ -46,6 +46,18 @@ export const metadata: Metadata = {
   },
 };
 
+// Anti-parpadeo del override manual de tema (§6, 19 ago 2026). Crudo, sin
+// next/script, mismo criterio que el resto de los <script> de este archivo.
+// Corre en <head>, antes que cualquier otra cosa: si hay preferencia
+// guardada, aplica la clase ANTES de que el navegador pinte nada. Si no
+// hay nada guardado, no toca el DOM y manda la media query de siempre.
+const themeInitScript = `
+try {
+  var t = localStorage.getItem("theme");
+  if (t) document.documentElement.classList.add(t);
+} catch (e) {}
+`;
+
 // Gesto para quien abre devtools -- la audiencia técnica real del sitio.
 // Inline, sin componente de cliente ni estado: es la única línea de JS
 // propio del sitio, a propósito, y se mide en bytes exactos (§5).
@@ -78,7 +90,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       className={`${spaceGrotesk.variable} ${ibmPlexSans.variable} ${ibmPlexMono.variable}`}
+      suppressHydrationWarning
     >
+      <head>
+        <script
+          id="theme-init"
+          dangerouslySetInnerHTML={{ __html: themeInitScript }}
+        />
+      </head>
       <body className="bg-paper text-ink font-body antialiased">
         <script
           type="application/ld+json"

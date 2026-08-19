@@ -17,6 +17,7 @@ Construcción base:
 Identidad visual:
 - [x] Paleta definitiva: `--accent` teal (#0B6670) + `--flag` funcional (#8A6D0E), ambos verificados en código
 - [x] Modo oscuro automático (`prefers-color-scheme`, cero JS, tokens propios verificados)
+- [x] Toggle manual de tema (19 ago 2026): override sobre `prefers-color-scheme` vía `.dark`/`.light` en `globals.css` (misma especificidad que la media query, orden decide) + script anti-parpadeo crudo en `<head>` de `layout.tsx` + botón `ThemeToggle.tsx` en el Header. Persiste en `localStorage`, verificado tras reload (incluso en `domcontentloaded`, antes de `networkidle`, para confirmar que no hay ventana de parpadeo). Verificado: sistema claro/oscuro sin override, override manual en ambas direcciones, foco de teclado + Enter/Space, aria-label dinámico, 360px y desktop, cero errores de consola. Peso: ~630 B Brotli el botón, ~100 B el script inline (no cuenta en el first-load JS formal, reportado igual) — total ~730 B contra el margen de ~8,65 KB. `npm run build` limpio.
 - [x] Decisión: Hero lleva un uso mínimo de `--accent` (una palabra del h1: "hand"), mismo patrón que "Selected **work**". About ya tenía su propio uso (el span "close to the platform"). Las 4 secciones tienen ahora al menos un toque de acento, ninguna queda completamente silenciosa.
 
 Navegación:

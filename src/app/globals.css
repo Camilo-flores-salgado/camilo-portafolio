@@ -11,9 +11,9 @@
 }
 
 /*
- * Modo oscuro automático (§9) — 100% CSS, cero JS, reacciona a la
- * preferencia del sistema. Sin toggle: si el usuario no pidió oscuro, no
- * pasa nada.
+ * Modo oscuro (§9) — automático por defecto, con override manual (19 ago
+ * 2026). El comportamiento base sigue siendo 100% CSS: si el usuario nunca
+ * tocó el botón de tema (Header), esta media query manda, igual que antes.
  *
  * paper/ink: se invierten los mismos dos valores del modo claro (no son
  * colores nuevos) — 16,41:1 en ambos sentidos, verificado.
@@ -39,6 +39,34 @@
     --accent: #12a9ba;
     --flag: #b99213;
   }
+}
+
+/*
+ * Override manual (ThemeToggle.tsx + el script anti-parpadeo en <head> de
+ * layout.tsx). Mismos valores que arriba, en un selector de clase en vez
+ * de media query -- .dark/.light tienen la misma especificidad que :root
+ * (0,1,0), así que quién gana lo decide el ORDEN en el archivo, no un
+ * !important: .dark después de la media query le gana a la preferencia de
+ * sistema cuando el sistema pide claro; .light, declarada al final, le
+ * gana a la media query cuando el sistema pide oscuro pero el usuario
+ * forzó claro. Si no hay ninguna clase, no cambia nada de lo de arriba.
+ */
+.dark {
+  --paper: #16181d;
+  --ink: #f6f6f4;
+  --grey: #999da5;
+  --line: #282b32;
+  --accent: #12a9ba;
+  --flag: #b99213;
+}
+
+.light {
+  --paper: #f6f6f4;
+  --ink: #16181d;
+  --grey: #70747c;
+  --line: #e3e3e0;
+  --accent: #0b6670;
+  --flag: #8a6d0e;
 }
 
 @theme inline {
@@ -93,6 +121,39 @@
 body {
   background: var(--paper);
   color: var(--ink);
+}
+
+/*
+ * Ícono del ThemeToggle: qué mitad (sol/luna) se ve la decide CSS, no
+ * React -- mismo orden de cascada que los tokens de color arriba, así el
+ * ícono correcto aparece desde el primer paint, sin depender de que el
+ * componente cliente monte y corrija el estado.
+ */
+.theme-toggle-icon--moon {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .theme-toggle-icon--sun {
+    display: none;
+  }
+  .theme-toggle-icon--moon {
+    display: block;
+  }
+}
+
+.dark .theme-toggle-icon--sun {
+  display: none;
+}
+.dark .theme-toggle-icon--moon {
+  display: block;
+}
+
+.light .theme-toggle-icon--sun {
+  display: block;
+}
+.light .theme-toggle-icon--moon {
+  display: none;
 }
 
 /*
