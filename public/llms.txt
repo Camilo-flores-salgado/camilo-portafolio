@@ -1,0 +1,20 @@
+# Camilo Flores
+
+> Web developer building fast, accessible websites — by hand. Focus: performance & accessibility. Stack: Next.js, React, TypeScript. Based in San Felipe, Chile.
+
+## About
+
+Camilo builds close to the platform: native CSS before animation libraries, semantic HTML before ARIA patches, measured performance instead of assumed performance. He currently works full-time as a web developer at a Chilean technology company with international presence.
+
+## Selected work
+
+- camiloflores.cl — Sales site for a local web-dev practice. No UI framework, no client JS beyond a live load-time meter; the speed is the argument. https://www.camiloflores.cl/
+- Encuentro PyME Aconcagua — Demo event landing with a real registration form that works with no client JS (Cloudflare Worker + Resend, native POST). https://landingdemo1.houdini-dev.workers.dev/
+- GVE Sistemas — Client website, built end-to-end. No longer online; presented with a client testimonial.
+
+## Contact
+
+- Email: houdini.dev@outlook.com
+- GitHub: https://github.com/r3ckleszz1
+- LinkedIn: https://linkedin.com/in/camilo-flores
+- Site: https://camilo-portafolio-rho.vercel.app

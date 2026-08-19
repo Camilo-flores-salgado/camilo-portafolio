@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, IBM_Plex_Sans, Space_Grotesk } from "next/font/google";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -20,10 +21,29 @@ const ibmPlexMono = IBM_Plex_Mono({
   weight: "500",
 });
 
-// TODO: title y description finales (§13) — copy real llega en un prompt siguiente
+const title = "Camilo Flores — Web Developer";
+const description =
+  "Web developer building fast, accessible websites — by hand. Portfolio and selected work.";
+
 export const metadata: Metadata = {
-  title: "Camilo Flores - Web Developer",
-  description: "Camilo Flores' personal website and portfolio. Web Developer based in Chile.",
+  metadataBase: new URL(SITE_URL),
+  title,
+  description,
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title,
+    description,
+    url: SITE_URL,
+    siteName: "Camilo Flores",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+  },
 };
 
 // Gesto para quien abre devtools -- la audiencia técnica real del sitio.
@@ -40,6 +60,7 @@ const personJsonLd = {
   "@type": "Person",
   name: "Camilo Flores",
   jobTitle: "Web Developer",
+  url: SITE_URL,
   address: {
     "@type": "PostalAddress",
     addressLocality: "San Felipe",

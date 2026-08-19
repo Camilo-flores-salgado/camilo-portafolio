@@ -274,13 +274,17 @@ Recordatorio de foco: el portafolio es una apuesta **nueva** (empleo), distinta 
 
 A diferencia del sitio de ventas, este **debe ser encontrable**: un reclutador te googlea.
 
-- Indexable (nada de `noindex` en la página principal).
-- Un `<h1>`, jerarquía real de encabezados, HTML semántico y parseable.
-- `<title>` y `meta description` escritos a mano, en inglés.
-- JSON-LD `Person` (nombre, rol, `sameAs` a GitHub y LinkedIn, ubicación).
-- OG image estática.
-- **Consistencia de entidad:** mismo nombre ("Camilo Flores"), mismo handle, misma descripción y foto (si hay) que en GitHub y LinkedIn. Esto es lo que más ayuda a que te encuentren y a que un modelo te cite — más que cualquier truco.
-- `sitemap.xml`, `robots.txt`, `llms.txt`.
+- ✅ Indexable (nada de `noindex` en la página principal).
+- ✅ Un `<h1>`, jerarquía real de encabezados, HTML semántico y parseable.
+- ✅ `<title>` y `meta description` escritos a mano, en inglés (19 ago 2026): *"Camilo Flores — Web Developer"* / *"Web developer building fast, accessible websites — by hand. Portfolio and selected work."* — conecta directo con la declaración de oficio del Hero (§13), en vez de copy genérica.
+- ✅ JSON-LD `Person` (`layout.tsx`): `name`, `jobTitle`, `url`, `email`, `address`, `sameAs` a GitHub y LinkedIn.
+- ✅ OG image estática (19 ago 2026): generada una vez en build time vía `app/opengraph-image.tsx` (`next/og` + `ImageResponse`, fuentes Space Grotesk/IBM Plex Mono reales del sitio, tokens `--paper`/`--ink`/`--accent`) — con `output: 'export'` queda como archivo estático fijo, no una ruta dinámica por request. 1200×630, cero fotos/ilustraciones nuevas.
+- ✅ Meta tags Open Graph + Twitter Card (`layout.tsx`, `openGraph`/`twitter` en `metadata`), mismo title/description que arriba, `card: summary_large_image`.
+- ✅ Canonical URLs (`alternates.canonical`) y `metadataBase`, contra `NEXT_PUBLIC_SITE_URL`.
+- ⏳ **Consistencia de entidad:** mismo nombre ("Camilo Flores"), mismo handle, misma descripción y foto (si hay) que en GitHub y LinkedIn. Esto es lo que más ayuda a que te encuentren y a que un modelo te cite — más que cualquier truco. Pendiente de verificación manual (§14), no es código.
+- ✅ `sitemap.xml` (`app/sitemap.ts`), `robots.txt` (`app/robots.ts`), `llms.txt` (`public/llms.txt`, contenido tomado tal cual de §13, verificados generándose en `out/` con `output: 'export'`, no solo en dev).
+
+**URL base (19 ago 2026):** todo lo de arriba que necesita una URL absoluta (sitemap, canonical, JSON-LD `url`, OG/Twitter) usa `NEXT_PUBLIC_SITE_URL` (`src/lib/site.ts`), hoy `https://camilo-portafolio-rho.vercel.app` — el deploy activo, mientras no exista dominio propio (§14). Es una variable de entorno, no un string hardcodeado repetido: cuando haya dominio, es un solo valor a cambiar. **Detalle pendiente de tu parte:** `.env` está gitignoreado (convención ya existente del repo, no la cambié sin avisar) — el build local ya lo lee bien, pero el deploy real en Vercel necesita la misma variable configurada a mano en Project Settings → Environment Variables para no depender solo del fallback hardcodeado en `site.ts` (que hoy apunta al mismo valor, así que no hay bug visible, pero sí una dependencia silenciosa a resolver).
 
 ---
 
