@@ -67,6 +67,8 @@ Corolario: acá la excelencia técnica **no** es invisible (como en el sitio de 
 
 **Por qué Vercel acá y Cloudflare en los otros dos proyectos:** los otros dos sitios usan Cloudflare por el POP en Santiago (latencia para clientes chilenos) y su analítica sin cookies — ninguna de esas dos razones aplica a una audiencia de reclutadores internacionales. Vercel, además de servir el export estático sin fricción, es la empresa creadora de Next.js: para un portafolio que demuestra dominio de ese framework, desplegarlo ahí es una señal más de fluidez con el ecosistema completo. Sin analítica por defecto (no exigida para este sitio); si se agrega alguna, evaluar su peso contra el margen de ~9 KB antes de instalarla.
 
+**Headers de seguridad (24 ago 2026):** `vercel.json` en la raíz — `X-Content-Type-Options`, `X-Frame-Options: DENY`, `Referrer-Policy`, `Strict-Transport-Security`, y un `Content-Security-Policy` acotado (`default-src 'self'`, sin fuentes ni scripts de terceros, consistente con §5). No se configuran en `next.config.ts`: con `output: 'export'` no hay servidor Next en runtime que los inyecte, así que la única vía real es la capa de hosting. Solo tienen efecto en el deploy real de Vercel, no en `next build`/`next dev` locales — verificar con `curl -I` contra la URL de producción después de cada deploy, no asumir que llegan.
+
 **Por qué Next/React acá y Astro allá:** no es contradicción, es la herramienta correcta para *esta* audiencia. El mercado laboral corre sobre React y Next y muchos reclutadores filtran por esas palabras. Mostrarlos **es** parte del trabajo del sitio. Pero Next no es excusa para un sitio pesado: la disciplina de rendimiento se traslada, no se relaja (§5).
 
 **Export estático:** el sitio no tiene nada dinámico en runtime. Todo pre-generado. Sin componentes de servidor con fetch en vivo, sin rutas dinámicas sin `generateStaticParams`.
@@ -94,7 +96,7 @@ Next 16 auto-detecta agentes de IA y, por defecto, edita `CLAUDE.md` al correr `
 
 Estas dos son las únicas con symlink real y entrada en `skills-lock.json` (que vive en la raíz del repo). Nada más debería estar en el `.claude/` de este repo.
 
-- **webapp-testing (Anthropic)** — fuente: `anthropics/skills`. Scripts nativos de Playwright en Python para testear la app local; NO es el MCP `playwright`, es una skill con criterio de testing incorporado (árbol de decisión HTML estático vs. dinámico, disciplina de no inflar contexto). Úsala para verificar de verdad: animaciones de scroll, navegación por teclado, foco, contraste, y el pre-flight de calidad antes de dar algo por terminado.
+- **webapp-testing (Anthropic)** — fuente: `anthropics/skills`. Scripts nativos de Playwright en Python para testear la app local; NO es el MCP `playwright`, es una skill con criterio de testing incorporado (árbol de decisión HTML estático vs. dinámico, disciplina de no inflar contexto). Úsala para verificar de verdad: animaciones de scroll, navegación por teclado, foco, contraste, y el pre-flight de calidad antes de dar algo por terminado. Los tests regresivos que produce viven en `tests/` (ver `tests/README.md`) y se corren todos juntos con `npm run test:e2e` (24 ago 2026: antes no había forma de correrlos de una vez — cada uno asumía un server ya arriba en :3000 y no había script que los encadenara).
 - **TasteSkill (`design-taste-frontend`)** — fuente: `Leonxlnx/taste-skill`. Reglas anti-genérico. **Alineada casi por completo** con la estética de §6 (un solo acento, sin gradientes de IA, sin scroll listeners a mano, sin tres tarjetas iguales). Se usa, **con estas sobrescrituras explícitas**, porque manda este archivo:
   - **Numeración de proyectos `01 / 02 / 03` SÍ se permite.** TasteSkill banea eyebrows numerados en general; acá es una secuencia real de proyectos y es parte del concepto de ficha técnica (§6). Excepción autorizada.
   - **Los guiones largos (em-dash) los decido yo.** La voz del sitio la define §8, no TasteSkill. Su prohibición de em-dash no aplica acá.
@@ -221,6 +223,12 @@ Base sin cambios: `@media (prefers-color-scheme: dark)` sobre `:root` en `global
 ### Piso de calidad
 Responsive hasta 360px. Foco de teclado visible. `prefers-reduced-motion` respetado (§7). Contraste AA mínimo, AAA en cuerpo; verifica los ratios reales (el cobalto sobre papel y el gris sobre papel se calculan, no se estiman). Enlaces que abren pestaña nueva lo avisan con `sr-only`. Todo indexable y semántico (§10).
 
+**Skip-link (24 ago 2026):** `<a href="#main-content">Skip to content</a>` como primer elemento del `<body>` en `layout.tsx` — vive ahí (no en `page.tsx`) porque debe estar antes de cualquier contenido en las dos páginas del sitio (`/` y la 404). `sr-only` hasta que recibe foco (`focus-visible:not-sr-only`), mismos tokens que el resto del sitio al hacerse visible. `<main id="main-content">` en `page.tsx` y en `not-found.tsx` (el mismo id en ambas rutas, mismo destino). Verificado con axe-core y Playwright: primer Tab de la página, outline `--accent` visible, activa con Enter, cero errores de consola en las 4 combinaciones claro/oscuro × desktop/360px.
+
+**Favicon (24 ago 2026):** `src/app/icon.tsx`, generado en build con `next/og` (mismo patrón que `opengraph-image.tsx`, `dynamic = "force-static"`), reemplaza el `favicon.ico` default de `create-next-app` (borrado). Monograma "C" (no "CF" — probado, dos letras se leen como mancha a tamaño real de pestaña) en Space Grotesk 700, blanco sobre `--accent`. Legibilidad verificada con el downscale real a 16×16 vía canvas (mismo suavizado que usa un navegador), no solo en la vista previa grande.
+
+**Auditoría de accesibilidad con axe-core (24 ago 2026):** corrida vía Playwright contra el export estático (`axe-core` 4.13.0, ya presente en `node_modules` de forma transitiva, sin instalar nada). 0 violaciones reales. Un hallazgo inicial de `color-contrast` en el primer proyecto de Selected Work resultó ser un falso positivo del momento del escaneo (el DOM capturado a mitad del fade de `.project-reveal`, opacidad parcial) — confirmado re-corriendo con `prefers-reduced-motion: reduce` (contenido en su estado final, §7): 0 violaciones. El contraste real que lee un usuario es el de los tokens documentados arriba, no el que se ve a mitad de animación.
+
 **Contraste de `--accent`, medido (16-17 ago 2026, con el teal actual):** `#0B6670` sobre `--paper` claro da **6,16:1**; `#12A9BA` (versión dark, ver más abajo) sobre `--paper` oscuro da **6,27:1**. Dos casos distintos, según el tamaño del texto donde se use:
 - **Texto de cuerpo** (`text-body-lg`, 18-22px, ej. el span de About en §13): el umbral exigido es AAA normal (7:1) — **no se alcanza, en ningún peso**, con ninguno de los dos valores. Es un límite matemático del color, no de la implementación. Excepción documentada y a propósito: ahí el estándar exigido baja a **AA (4,5:1)**, que sí se cumple con margen — mantenerlo a spans cortos (2-4 palabras), nunca párrafos completos en ese color.
 - **Texto grande** (≥24px por tamaño, sin importar el peso — WCAG lo clasifica como "texto grande" solo por tamaño a partir de ahí; ej. la palabra "hand" en el `<h1>` del Hero, verificado en 8 breakpoints entre 41,4px y 80px): el umbral es AAA de texto grande (4,5:1) — **se cumple limpio, sin excepción**, con los dos valores medidos arriba.
@@ -333,21 +341,22 @@ Todo en **inglés**. Lo que falte es `TODO:` y se pregunta.
 - Ficha técnica (mono):
   - Focus: performance & accessibility
   - Stack: Next.js · React · TypeScript
-  - Based in: San Felipe, Chile
-- Enlaces: GitHub `https://github.com/r3ckleszz1` · LinkedIn `https://linkedin.com/in/camilo-flores`
+  - Based in: Chile · Open to remote work
+- Enlaces: GitHub `https://github.com/Camilo-flores-salgado` · LinkedIn `https://linkedin.com/in/camilo-flores`
 
 ### Selected work (3)
-1. **camiloflores.cl** — sales site for a local web-dev practice. No UI framework, no client JS beyond a live load-time meter; the speed is the argument. Live: `https://www.camiloflores.cl/`. Code: repo privado por ahora — badge `--flag` "Repo private" en vez de enlace, sin nada roto que abrir. Métricas (PageSpeed móvil, 16 ago 2026): Performance 97 · CLS 0 · JS mínimo.
-2. **Encuentro PyME Aconcagua** — demo event landing with a real registration form that works with **no client JS** (Cloudflare Worker + Resend, native POST). Rotulado como **Demo** + **Repo private** (dos badges `--flag`, 17 ago 2026: se verificó que no se aprietan a 360px). Live: `https://landingdemo1.houdini-dev.workers.dev/`. Además lleva un diagrama SVG estático (cero JS) del flujo real `<form> nativo → Cloudflare Worker → Resend`, junto a la ficha del proyecto. Métricas (PageSpeed móvil, 16 ago 2026): Performance 100 · CLS 0 · JS mínimo.
+1. **camiloflores.cl** — sales site for a local web-dev practice. No UI framework, no client JS beyond a live load-time meter; the speed is the argument. Live: `https://www.camiloflores.cl/`. Code (24 ago 2026, repo público confirmado): `https://github.com/Camilo-flores-salgado/CamiloWeb` — mismo tratamiento visual que "Live" (badge "Repo private" retirado, ya no aplica). Métricas (PageSpeed móvil, 16 ago 2026): Performance 97 · CLS 0 · JS mínimo.
+2. **Encuentro PyME Aconcagua** — demo event landing with a real registration form that works with **no client JS** (Cloudflare Worker + Resend, native POST). Rotulado como **Demo** (badge `--flag` único, 24 ago 2026: "Repo private" retirado, el repo ya es público). Live: `https://landingdemo1.houdini-dev.workers.dev/`. Code: `https://github.com/Camilo-flores-salgado/LandingDemo`. Además lleva un diagrama SVG estático (cero JS) del flujo real `<form> nativo → Cloudflare Worker → Resend`, junto a la ficha del proyecto. Métricas (PageSpeed móvil, 16 ago 2026): Performance 100 · CLS 0 · JS mínimo.
 3. **GVE Sistemas** — client website (built end-to-end). **La empresa cerró y el sitio ya no está en línea: NO poner enlace "Live" roto.** Badge `--flag` "Not currently live" junto al número/año. Nunca tuvo "Code" (proyecto de cliente). Se presenta como experiencia con el testimonio (permiso concedido): *"Trabajar con Camilo Flores fue una experiencia excelente…"* — **Gonzalo Toro, CEO, ITQ Internacional.** (Traducir al inglés con cuidado o mantener la cita en español con nota; a decidir.)
 
 ### About / empleo
 - Referir la experiencia actual como "a Chilean technology company with international presence". **Sin nombrar la empresa** (discreción frente al empleo actual, §1). `TODO:` decidir si en el CV privado se nombra.
 - Nada de "looking for work".
+- Ubicación (24 ago 2026, enfoque remoto): "Based in Chile, open to remote roles worldwide." — reemplaza la mención anterior a San Felipe/valle de Aconcagua, para reclutadores de EE.UU./Europa a quienes la especificidad local no les aporta nada. Sin zona horaria ni solapamiento horario (no confirmado, no se inventa).
 
 ### Contact
 - Correo: `houdini.dev@outlook.com`
-- GitHub: `https://github.com/r3ckleszz1` · LinkedIn: `https://linkedin.com/in/camilo-flores`
+- GitHub: `https://github.com/Camilo-flores-salgado` · LinkedIn: `https://linkedin.com/in/camilo-flores`
 - CV: PDF, descargable. Archivo: `public/cv-camilo-flores.pdf` (colocarlo ahí antes de correr el prompt de Contact — Claude Code no debe inventar el archivo ni un placeholder de contenido, solo enlazarlo). Es descarga directa, no abre pestaña nueva: no necesita el aviso `sr-only` de pestaña externa, pero sí un texto claro tipo "Download CV (PDF)".
 
 ### Dominio
@@ -358,7 +367,7 @@ Todo en **inglés**. Lo que falte es `TODO:` y se pregunta.
 ## 14. Qué falta — antes y después de construir
 
 Antes de que el sitio sirva de verdad, cosas que **solo tú** resuelves y no son código:
-1. **Consistencia de entidad** (§10): las URLs ya están confirmadas (GitHub `r3ckleszz1`, LinkedIn `camilo-flores`). Falta verificar que el nombre, la descripción y la foto (si hay) coincidan entre las tres plataformas — eso sigue pendiente de tu parte.
+1. **Consistencia de entidad** (§10): las URLs ya están confirmadas (GitHub `Camilo-flores-salgado`, actualizado 24 ago 2026 tras cambio de usuario; LinkedIn `camilo-flores`). Falta verificar que el nombre, la descripción y la foto (si hay) coincidan entre las tres plataformas — eso sigue pendiente de tu parte.
 2. **El CV en PDF** al día.
 3. **Decidir el dominio** y si nombras (o no) tu empleo actual.
 4. **Medir** las métricas reales de los tres proyectos para no publicar cifras sin medir. ✅ Hecho (PageSpeed móvil, 16 ago 2026): portafolio 99/100 Rendimiento (LCP 2,0s, CLS 0, TBT 20ms), camiloflores.cl 97/100 (LCP 1,8s, CLS 0), demo Encuentro PyME 100/100 (LCP 1,4s, CLS 0). Quedan dos hallazgos anotados abajo, aceptados como pendientes no urgentes.

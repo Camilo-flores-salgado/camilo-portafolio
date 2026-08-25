@@ -1,7 +1,7 @@
 import ThemeToggle from "@/components/ThemeToggle";
 
 const links = [
-  { label: "GitHub", href: "https://github.com/r3ckleszz1" },
+  { label: "GitHub", href: "https://github.com/Camilo-flores-salgado" },
   { label: "LinkedIn", href: "https://linkedin.com/in/camilo-flores" },
 ];
 

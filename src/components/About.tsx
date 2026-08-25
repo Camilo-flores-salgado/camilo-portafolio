@@ -7,7 +7,7 @@ const paragraphs = [
   </>,
   "This site follows the same rule. Every metric on it is measured, not estimated.",
   "He currently works full-time as a web developer at a Chilean technology company with international presence.",
-  "Based in San Felipe, in Chile's Aconcagua valley.",
+  "Based in Chile, open to remote roles worldwide.",
 ];
 
 export default function About() {

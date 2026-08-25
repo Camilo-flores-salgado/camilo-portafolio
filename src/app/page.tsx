@@ -6,7 +6,7 @@ import SelectedWork from "@/components/SelectedWork";
 
 export default function Home() {
   return (
-    <main className="flex min-h-svh flex-col">
+    <main id="main-content" className="flex min-h-svh flex-col">
       <Header />
       <Hero />
       <SelectedWork />

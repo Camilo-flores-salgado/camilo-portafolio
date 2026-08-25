@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:e2e": "python .claude/skills/webapp-testing/scripts/with_server.py --server \"npm run dev\" --port 3000 -- python tests/run_all.py"
   },
   "dependencies": {
     "next": "16.3.1",

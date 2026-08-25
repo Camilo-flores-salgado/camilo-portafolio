@@ -1,7 +1,7 @@
 const facts = [
   { label: "Focus", value: "performance & accessibility" },
   { label: "Stack", value: "Next.js · React · TypeScript" },
-  { label: "Based in", value: "San Felipe, Chile" },
+  { label: "Based in", value: "Chile · Open to remote work" },
 ];
 
 export default function Hero() {

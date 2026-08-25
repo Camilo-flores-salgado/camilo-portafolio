@@ -16,8 +16,8 @@ const contactPoints: ContactPoint[] = [
   },
   {
     label: "GitHub",
-    value: "github.com/r3ckleszz1",
-    href: "https://github.com/r3ckleszz1",
+    value: "github.com/Camilo-flores-salgado",
+    href: "https://github.com/Camilo-flores-salgado",
     external: true,
   },
   {

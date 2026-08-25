@@ -1,5 +1,5 @@
 type ProjectLink = {
-  label: "Live";
+  label: "Live" | "Code";
   href: string;
 };
 
@@ -43,7 +43,6 @@ const projects: Project[] = [
     number: "01",
     year: "TODO",
     title: "camiloflores.cl",
-    badges: ["Repo private"],
     description:
       "Sales site for a local web-dev practice. No UI framework, no client JS beyond a live load-time meter; the speed is the argument.",
     metrics: [
@@ -51,14 +50,20 @@ const projects: Project[] = [
       { label: "CLS", value: "0" },
       { label: "JS", value: "Minimal" },
     ],
-    links: [{ label: "Live", href: "https://www.camiloflores.cl/" }],
+    links: [
+      { label: "Live", href: "https://www.camiloflores.cl/" },
+      {
+        label: "Code",
+        href: "https://github.com/Camilo-flores-salgado/CamiloWeb",
+      },
+    ],
   },
   {
     kind: "shipped",
     number: "02",
     year: "TODO",
     title: "Encuentro PyME Aconcagua",
-    badges: ["Demo", "Repo private"],
+    badges: ["Demo"],
     description:
       "Demo event landing with a real registration form that works with no client JS (Cloudflare Worker + Resend, native POST).",
     metrics: [
@@ -68,6 +73,10 @@ const projects: Project[] = [
     ],
     links: [
       { label: "Live", href: "https://landingdemo1.houdini-dev.workers.dev/" },
+      {
+        label: "Code",
+        href: "https://github.com/Camilo-flores-salgado/LandingDemo",
+      },
     ],
     diagram: true,
   },

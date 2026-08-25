@@ -1,6 +1,6 @@
 # Camilo Flores
 
-> Web developer building fast, accessible websites — by hand. Focus: performance & accessibility. Stack: Next.js, React, TypeScript. Based in San Felipe, Chile.
+> Web developer building fast, accessible websites — by hand. Focus: performance & accessibility. Stack: Next.js, React, TypeScript. Based in Chile, open to remote roles worldwide.
 
 ## About
 
@@ -15,6 +15,6 @@ Camilo builds close to the platform: native CSS before animation libraries, sema
 ## Contact
 
 - Email: houdini.dev@outlook.com
-- GitHub: https://github.com/r3ckleszz1
+- GitHub: https://github.com/Camilo-flores-salgado
 - LinkedIn: https://linkedin.com/in/camilo-flores
 - Site: https://camilo-portafolio-rho.vercel.app
