@@ -19,12 +19,12 @@ async function loadFont(url: string) {
 }
 
 export default async function Image() {
-  const [spaceGrotesk, ibmPlexMono] = await Promise.all([
+  const [oswald600, oswald700] = await Promise.all([
     loadFont(
-      "https://fonts.gstatic.com/s/spacegrotesk/v22/V8mQoQDjQSkFtoMM3T6r8E7mF71Q-gOoraIAEj4PVksj.ttf"
+      "https://fonts.gstatic.com/s/oswald/v57/TK3_WkUHHAIjg75cFRf3bXL8LICs1y9ogUE.ttf"
     ),
     loadFont(
-      "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3twJ8lc.ttf"
+      "https://fonts.gstatic.com/s/oswald/v57/TK3_WkUHHAIjg75cFRf3bXL8LICs1xZogUE.ttf"
     ),
   ]);
 
@@ -45,9 +45,9 @@ export default async function Image() {
         <div
           style={{
             display: "flex",
-            fontFamily: "IBM Plex Mono",
+            fontFamily: "Oswald",
             fontSize: 22,
-            fontWeight: 500,
+            fontWeight: 600,
             letterSpacing: 2,
             textTransform: "uppercase",
             color: INK,
@@ -60,7 +60,7 @@ export default async function Image() {
         <div
           style={{
             display: "flex",
-            fontFamily: "Space Grotesk",
+            fontFamily: "Oswald",
             fontSize: 96,
             fontWeight: 700,
             lineHeight: 1.05,
@@ -76,9 +76,9 @@ export default async function Image() {
             marginTop: 44,
             paddingTop: 32,
             borderTop: `1px solid ${LINE}`,
-            fontFamily: "IBM Plex Mono",
+            fontFamily: "Oswald",
             fontSize: 28,
-            fontWeight: 500,
+            fontWeight: 600,
             color: ACCENT,
           }}
         >
@@ -89,8 +89,8 @@ export default async function Image() {
     {
       ...size,
       fonts: [
-        { name: "Space Grotesk", data: spaceGrotesk, weight: 700, style: "normal" },
-        { name: "IBM Plex Mono", data: ibmPlexMono, weight: 500, style: "normal" },
+        { name: "Oswald", data: oswald700, weight: 700, style: "normal" },
+        { name: "Oswald", data: oswald600, weight: 600, style: "normal" },
       ],
     }
   );

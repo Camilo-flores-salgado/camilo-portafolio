@@ -17,14 +17,16 @@ async function loadFont(url: string) {
 }
 
 // Un solo glifo, no "CF": a 16x16 efectivos (el tamaño real de pestaña) dos
-// letras en Space Grotesk se vuelven una mancha ilegible -- probado en el
-// render final, no asumido (ver nota de verificación en la conversación).
+// letras se vuelven una mancha ilegible -- probado en el render final, no
+// asumido (ver nota de verificación en la conversación). Migrado de Space
+// Grotesk a Oswald 700 (25 ago 2026, CLAUDE.md §6) para seguir el sistema
+// tipográfico del sitio; legibilidad a 16x16 re-verificada tras el cambio.
 // Fondo --accent en vez de --ink/--paper porque acá el favicon actúa como
 // marca, no como texto de sitio: es el mismo uso "de decisión" que ya tiene
 // --accent en el resto del sitio, aplicado una sola vez.
 export default async function Icon() {
-  const spaceGrotesk = await loadFont(
-    "https://fonts.gstatic.com/s/spacegrotesk/v22/V8mQoQDjQSkFtoMM3T6r8E7mF71Q-gOoraIAEj4PVksj.ttf"
+  const oswald = await loadFont(
+    "https://fonts.gstatic.com/s/oswald/v57/TK3_WkUHHAIjg75cFRf3bXL8LICs1xZogUE.ttf"
   );
 
   return new ImageResponse(
@@ -42,7 +44,7 @@ export default async function Icon() {
         <div
           style={{
             display: "flex",
-            fontFamily: "Space Grotesk",
+            fontFamily: "Oswald",
             fontWeight: 700,
             fontSize: 24,
             lineHeight: 1,
@@ -56,7 +58,7 @@ export default async function Icon() {
     {
       ...size,
       fonts: [
-        { name: "Space Grotesk", data: spaceGrotesk, weight: 700, style: "normal" },
+        { name: "Oswald", data: oswald, weight: 700, style: "normal" },
       ],
     }
   );
