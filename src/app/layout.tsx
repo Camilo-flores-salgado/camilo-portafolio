@@ -1,24 +1,22 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, IBM_Plex_Sans, Space_Grotesk } from "next/font/google";
+import { Newsreader, Oswald } from "next/font/google";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
-const spaceGrotesk = Space_Grotesk({
+const oswald = Oswald({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: "700",
+  weight: ["600", "700"],
 });
 
-const ibmPlexSans = IBM_Plex_Sans({
+// weight: "variable" (no lista de pesos fijos) carga la fuente variable
+// completa, con su eje óptico (opsz) intacto -- necesario para que el
+// tamaño óptico responda solo al font-size renderizado (mismo criterio que
+// Fraunces en el demo de Encuentro PyME), no solo el eje de peso.
+const newsreader = Newsreader({
   variable: "--font-body",
   subsets: ["latin"],
-  weight: ["400", "500"],
-});
-
-const ibmPlexMono = IBM_Plex_Mono({
-  variable: "--font-mono",
-  subsets: ["latin"],
-  weight: "500",
+  weight: "variable",
 });
 
 const title = "Camilo Flores — Web Developer";
@@ -88,7 +86,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${ibmPlexSans.variable} ${ibmPlexMono.variable}`}
+      className={`${oswald.variable} ${newsreader.variable}`}
       suppressHydrationWarning
     >
       <head>
@@ -100,7 +98,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="bg-paper text-ink font-body antialiased">
         <a
           href="#main-content"
-          className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-4 focus-visible:left-4 focus-visible:z-50 focus-visible:border focus-visible:border-line focus-visible:bg-paper focus-visible:px-4 focus-visible:py-2 focus-visible:font-mono focus-visible:text-meta focus-visible:text-ink focus-visible:uppercase focus-visible:tracking-wide focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+          className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-4 focus-visible:left-4 focus-visible:z-50 focus-visible:border focus-visible:border-line focus-visible:bg-paper focus-visible:px-4 focus-visible:py-2 focus-visible:font-display focus-visible:font-semibold focus-visible:text-meta focus-visible:text-ink focus-visible:uppercase focus-visible:tracking-wide focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
         >
           Skip to content
         </a>

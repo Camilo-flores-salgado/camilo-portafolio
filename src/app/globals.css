@@ -82,10 +82,15 @@
    * Fuentes: next/font/google inyecta estas custom properties en <html>
    * (ver layout.tsx). "inline" evita que Tailwind intente resolver el
    * valor en build time — el font-family real solo existe en runtime.
+   *
+   * Dos familias, no tres (25 ago 2026, ver CLAUDE.md §6): Oswald cubre
+   * títulos Y etiquetas/mono, mismo archivo de fuente, distinto tratamiento
+   * (mayúsculas, tracking, peso) resuelto en cada componente vía
+   * `font-display` + `font-semibold`/`font-bold`. No existe `--font-mono`:
+   * ningún componente usa esa clase.
    */
   --font-display: var(--font-display);
   --font-body: var(--font-body);
-  --font-mono: var(--font-mono);
 
   /*
    * Escala tipográfica explícita (§6). clamp() en los tamaños que crecen

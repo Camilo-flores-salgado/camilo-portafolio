@@ -47,7 +47,7 @@ export default function Contact() {
     >
       <h2
         id="contact-heading"
-        className="font-display text-display mb-8 sm:mb-12"
+        className="font-display font-bold text-display mb-8 sm:mb-12"
       >
         Contact
       </h2>
@@ -57,7 +57,7 @@ export default function Contact() {
       <dl className="mt-12 flex flex-col gap-8 sm:mt-16 sm:gap-10">
         {contactPoints.map((point) => (
           <div key={point.label} className="flex flex-col gap-1">
-            <dt className="font-mono text-meta text-ink uppercase tracking-wide">
+            <dt className="font-display font-semibold text-meta text-ink uppercase tracking-wide">
               {point.label}
             </dt>
             <dd>
@@ -69,7 +69,7 @@ export default function Contact() {
                 className={
                   point.emphasis
                     ? "font-body text-body-lg text-ink underline decoration-line underline-offset-4 hover:decoration-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
-                    : "font-mono text-meta text-ink underline decoration-line underline-offset-4 hover:decoration-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+                    : "font-display font-semibold text-meta text-ink underline decoration-line underline-offset-4 hover:decoration-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
                 }
               >
                 {point.value}
@@ -85,7 +85,7 @@ export default function Contact() {
           </div>
         ))}
       </dl>
-      <p className="font-mono text-micro text-ink mt-16 border-t border-line pt-8 sm:mt-20">
+      <p className="font-display font-semibold text-micro text-ink mt-16 border-t border-line pt-8 sm:mt-20">
         © {new Date().getFullYear()} Camilo Flores
       </p>
     </section>

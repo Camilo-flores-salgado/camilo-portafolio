@@ -12,10 +12,10 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <main id="main-content" className="flex min-h-svh flex-col items-center justify-center px-6 py-12 text-center sm:px-10">
-      <p className="font-mono text-meta text-ink uppercase tracking-wide">
+      <p className="font-display font-semibold text-meta text-ink uppercase tracking-wide">
         HTTP 404
       </p>
-      <h1 className="font-display text-display mt-4 max-w-2xl text-balance">
+      <h1 className="font-display font-bold text-display mt-4 max-w-2xl text-balance">
         This page doesn&apos;t exist.
       </h1>
       <p className="font-body text-body-lg text-ink mt-4 max-w-md">
@@ -31,7 +31,7 @@ export default function NotFound() {
         </a>
         <a
           href="/#work"
-          className="font-mono text-meta text-ink underline decoration-line underline-offset-4 hover:decoration-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+          className="font-display font-semibold text-meta text-ink underline decoration-line underline-offset-4 hover:decoration-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
         >
           Selected work
         </a>

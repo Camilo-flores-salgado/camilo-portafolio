@@ -34,14 +34,13 @@ type TestimonialProject = {
 
 type Project = ShippedProject | TestimonialProject;
 
-// TODO(§13): year todavía no está definido -- TODO explícito a propósito,
-// nunca un número inventado. Métricas (PageSpeed móvil, 16 ago 2026) ya
-// están medidas y sincronizadas con CLAUDE.md §13.
+// Métricas (PageSpeed móvil, 16 ago 2026) medidas y sincronizadas con
+// CLAUDE.md §13. Años confirmados por Camilo (25 ago 2026).
 const projects: Project[] = [
   {
     kind: "shipped",
     number: "01",
-    year: "TODO",
+    year: "2026",
     title: "camiloflores.cl",
     description:
       "Sales site for a local web-dev practice. No UI framework, no client JS beyond a live load-time meter; the speed is the argument.",
@@ -61,7 +60,7 @@ const projects: Project[] = [
   {
     kind: "shipped",
     number: "02",
-    year: "TODO",
+    year: "2026",
     title: "Encuentro PyME Aconcagua",
     badges: ["Demo"],
     description:
@@ -83,7 +82,7 @@ const projects: Project[] = [
   {
     kind: "testimonial",
     number: "03",
-    year: "TODO",
+    year: "2025",
     title: "GVE Sistemas",
     badges: ["Not currently live"],
     description: "Client website, built end-to-end.",
@@ -103,7 +102,7 @@ function ProjectLinks({ links }: { links: ProjectLink[] }) {
           href={link.href}
           target="_blank"
           rel="noopener"
-          className="font-mono text-meta text-ink underline decoration-line underline-offset-4 hover:decoration-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+          className="font-display font-semibold text-meta text-ink underline decoration-line underline-offset-4 hover:decoration-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
         >
           {link.label} <span aria-hidden="true">↗</span>
           <span className="sr-only"> (opens in a new tab)</span>
@@ -150,7 +149,7 @@ function FormFlowDiagram() {
           x="46"
           y="27"
           textAnchor="middle"
-          className="fill-ink font-mono text-[11px] uppercase tracking-wide"
+          className="fill-ink font-display font-semibold text-[11px] uppercase tracking-wide"
         >
           <tspan x="46" dy="0">Native</tspan>
           <tspan x="46" dy="14">&lt;form&gt; POST</tspan>
@@ -160,7 +159,7 @@ function FormFlowDiagram() {
           x="96.5"
           y="33"
           textAnchor="middle"
-          className="fill-ink font-mono text-[11px]"
+          className="fill-ink font-display font-semibold text-[11px]"
           aria-hidden="true"
         >
           →
@@ -179,7 +178,7 @@ function FormFlowDiagram() {
           x="147"
           y="27"
           textAnchor="middle"
-          className="fill-ink font-mono text-[11px] uppercase tracking-wide"
+          className="fill-ink font-display font-semibold text-[11px] uppercase tracking-wide"
         >
           <tspan x="147" dy="0">Cloudflare</tspan>
           <tspan x="147" dy="14">Worker</tspan>
@@ -189,7 +188,7 @@ function FormFlowDiagram() {
           x="197.5"
           y="33"
           textAnchor="middle"
-          className="fill-ink font-mono text-[11px]"
+          className="fill-ink font-display font-semibold text-[11px]"
           aria-hidden="true"
         >
           →
@@ -208,7 +207,7 @@ function FormFlowDiagram() {
           x="248"
           y="34"
           textAnchor="middle"
-          className="fill-ink font-mono text-[11px] uppercase tracking-wide"
+          className="fill-ink font-display font-semibold text-[11px] uppercase tracking-wide"
         >
           Resend
         </text>
@@ -224,7 +223,7 @@ function FormFlowDiagram() {
         <text
           x="26"
           y="72"
-          className="fill-accent font-mono text-[11px] uppercase tracking-wide"
+          className="fill-accent font-display font-semibold text-[11px] uppercase tracking-wide"
         >
           0 client JS
         </text>
@@ -242,7 +241,7 @@ export default function SelectedWork() {
     >
       <h2
         id="selected-work-heading"
-        className="font-display text-display mb-12 sm:mb-16"
+        className="font-display font-bold text-display mb-12 sm:mb-16"
       >
         Selected work
       </h2>
@@ -253,23 +252,23 @@ export default function SelectedWork() {
             className="project-reveal border-t border-line pt-8 sm:pt-12"
           >
             <div className="flex flex-wrap items-baseline gap-4">
-              <span className="font-mono text-project-number text-ink tabular-nums">
+              <span className="font-display font-semibold text-project-number text-ink tabular-nums">
                 {project.number}
               </span>
-              <span className="font-mono text-meta text-ink uppercase tracking-wide">
+              <span className="font-display font-semibold text-meta text-ink uppercase tracking-wide">
                 {project.year}
               </span>
               {project.badges?.map((badge) => (
                 <span
                   key={badge}
-                  className="rounded-sm border border-flag px-2 py-0.5 font-mono text-micro text-flag uppercase tracking-wide"
+                  className="rounded-sm border border-flag px-2 py-0.5 font-display font-semibold text-micro text-flag uppercase tracking-wide"
                 >
                   {badge}
                 </span>
               ))}
             </div>
 
-            <h3 className="font-display text-display mt-6">
+            <h3 className="font-display font-bold text-display mt-6">
               {project.title}
             </h3>
 
@@ -281,7 +280,7 @@ export default function SelectedWork() {
               <dl className="mt-8 flex flex-col gap-6 sm:flex-row sm:gap-12">
                 {project.metrics.map((metric) => (
                   <div key={metric.label} className="flex flex-col gap-1">
-                    <dt className="font-mono text-meta text-ink uppercase tracking-wide">
+                    <dt className="font-display font-semibold text-meta text-ink uppercase tracking-wide">
                       {metric.label}
                     </dt>
                     <dd className="font-body text-body text-ink tabular-nums">
@@ -292,13 +291,13 @@ export default function SelectedWork() {
               </dl>
             ) : (
               <blockquote className="mt-8 border-l-2 border-line pl-6">
-                <p className="font-mono text-meta text-ink uppercase tracking-wide">
+                <p className="font-display font-semibold text-meta text-ink uppercase tracking-wide">
                   Client testimonial (original in Spanish):
                 </p>
                 <p className="font-body text-body-lg text-ink mt-2 italic">
                   “{project.quote}”
                 </p>
-                <cite className="mt-2 block font-mono text-meta text-ink not-italic">
+                <cite className="mt-2 block font-display font-semibold text-meta text-ink not-italic">
                   — {project.author}
                 </cite>
               </blockquote>

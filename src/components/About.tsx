@@ -17,7 +17,7 @@ export default function About() {
       aria-labelledby="about-heading"
       className="project-reveal px-6 pt-20 pb-20 sm:px-10 sm:pt-28 sm:pb-28"
     >
-      <h2 id="about-heading" className="font-display text-display mb-8 sm:mb-12">
+      <h2 id="about-heading" className="font-display font-bold text-display mb-8 sm:mb-12">
         About
       </h2>
       <div className="flex max-w-2xl flex-col gap-4">
